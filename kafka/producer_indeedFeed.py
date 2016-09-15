@@ -34,7 +34,7 @@ def sendMessages(jobsListJSON):
 resp = getAndSendJobs(initialURL)
 start = 0
 
-while ( start <= 1000 ):
+while ( start <= 1000 ): #Indeed doesn't return more than 1000 rows at a time
    start += 25
    url = 'http://api.indeed.com/ads/apisearch?publisher=9693529091171604&q=data+engineering&l=San+Francisco,+CA&radius=10&limit=10000&format=json&userip=65.87.19.170&useragent=Mozilla&v=2&start=' + str(start)
    resp = getAndSendJobs(url)
