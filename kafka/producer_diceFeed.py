@@ -27,7 +27,7 @@ def sendMessages(jobsListJSON):
    #Send to Kafka each job item inside "resultItemList"
    for json_item in jobsListJSON:
        #print('{} {}'.format(json_item['jobTitle'], todo_item['company']))
-       producer.send('diceFeed', {'jobTitle': json_item['jobTitle'], 'company': json_item['company'] })
+       producer.send('diceFeed', {'jobTitle': json_item['jobTitle'], 'company': json_item['company'], 'detailUrl': json_item['detailUrl'], 'location': json_item['location'], 'date': json_item['date'] })
 
 '''
 for i in range(3):
