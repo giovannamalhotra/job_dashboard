@@ -39,7 +39,9 @@ for i in range(3):
 # url = 'http://service.dice.com/api/rest/jobsearch/v1/simple.json?areacode=&country=US&state=&skill=&city=&text=data+engineering&ip=&diceid=&page=1'
 resp = getAndSendJobs(initialURL)
 
-while ( int(resp.json()['lastDocument']) <= int(resp.json()['count']) ):
+while ( int(resp.json()['lastDocument']) <= int(resp.json()['count']) and resp.json()['nextUrl'] ):
+   #print("domain: " + domain)
+   #print("resp: " + str(resp.json()) )
    url = domain + resp.json()['nextUrl']
    resp = getAndSendJobs(url)
 
