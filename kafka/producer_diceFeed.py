@@ -3,7 +3,7 @@ import json
 import requests
 from urlparse import urlparse
 
-initialURL = 'http://service.dice.com/api/rest/jobsearch/v1/simple.json?areacode=&country=US&state=&skill=&city=&text=data+engineering&ip=&diceid=&page=1'
+initialURL = 'http://service.dice.com/api/rest/jobsearch/v1/simple.json?areacode=&country=US&state=&skill=&city=&ip=&diceid=&page=1'
 parsed_uri = urlparse(initialURL)
 domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
 
@@ -29,21 +29,23 @@ def sendMessages(jobsListJSON):
        #print('{} {}'.format(json_item['jobTitle'], todo_item['company']))
        producer.send('diceFeed', {'jobTitle': json_item['jobTitle'], 'company': json_item['company'], 'detailUrl': json_item['detailUrl'], 'location': json_item['location'], 'date': json_item['date'] })
 
-'''
-for i in range(3):
-   #   producer.send('foobar', b'some_message_bytes')
-   producer.send('diceFeed', {'jobTitle': 'Data Engineering'})
-'''
 
-# Data Engineering jobs
-# url = 'http://service.dice.com/api/rest/jobsearch/v1/simple.json?areacode=&country=US&state=&skill=&city=&text=data+engineering&ip=&diceid=&page=1'
-resp = getAndSendJobs(initialURL)
+#Arrays for combinations
+textArray = ['data+engineering', 'python', 'java', 'javascript', 'ruby', 'react', 'oracle'  ]
 
-while ( int(resp.json()['lastDocument']) <= int(resp.json()['count']) and resp.json()['nextUrl'] ):
-   #print("domain: " + domain)
-   #print("resp: " + str(resp.json()) )
-   url = domain + resp.json()['nextUrl']
-   resp = getAndSendJobs(url)
+for text in textArray:
+
+   # example of text: '&text=data+engineering'
+   additionalParams = '&text=data+engineering'
+   resp = getAndSendJobs(initialURL + additionalParams)
+   start = 0
+
+   while ( int(resp.json()['lastDocument']) <= int(resp.json()['count'])  and 'nextUrl' in resp.json() ):
+      #print("domain: " + domain)
+      #print("resp: " + str(resp.json()) )
+      url = domain + resp.json()['nextUrl']
+      resp = getAndSendJobs(url)
+
 
 
 # Block until all pending messages are sent
