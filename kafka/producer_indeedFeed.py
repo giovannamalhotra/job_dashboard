@@ -19,18 +19,36 @@ def getAndSendJobs(url):
       #raise ApiError('GET /tasks/ {}'.format(resp.status_code))
       print('Error')
    
-   if (resp.json()['results']):
+   if 'results' in resp.json():
       sendMessages(resp.json()['results'])
       return resp
 
 
 def sendMessages(jobsListJSON):
-   #Send to Kafka each job item inside "resultItemList"
+   #Send to Kafka each job item
    for json_item in jobsListJSON:
        #print('{} {}'.format(json_item['jobtitle'], todo_item['company']))
        producer.send('indeedFeed', {'jobtitle': json_item['jobtitle'], 'company': json_item['company'], 'city': json_item['city'], 'state': json_item['state'], 'country': json_item['country'], 'formattedLocation': json_item['formattedLocation'], 'date': json_item['date'], 'snippet': json_item['snippet'], 'url': json_item['url'], 'formattedLocationFull': json_item['formattedLocationFull'] })
 
 
+#Arrays for combinations
+locationArray = ['San+Francisco,+CA', 'Palo+Alto,+CA', 'New+York,+NY', 'Austin,+TX', 'Los+Angeles,+CA'  ]
+jobtitleArray = ['data+engineering', 'python', 'java', 'javascript', 'ruby', 'react', 'oracle'  ] 
+
+for location in locationArray:
+   for title in jobtitleArray:
+      
+      additionalParams = '&q=' + title + '&l=' + location 
+      resp = getAndSendJobs(initialURL + additionalParams)
+      start = 0
+
+      while ( start <= 1000 ): #Indeed doesn't return more than 1000 rows at a time
+         start += 25
+         url = initialURL + additionalParams + '&start=' + str(start)
+         resp = getAndSendJobs(url)
+
+
+'''
 # Data Engineering jobs in San Francisco
 resp = getAndSendJobs(initialURL + '&q=data+engineering&l=San+Francisco,+CA')
 start = 0
@@ -39,6 +57,7 @@ while ( start <= 1000 ): #Indeed doesn't return more than 1000 rows at a time
    start += 25
    url = initialURL + '&start=' + str(start)
    resp = getAndSendJobs(url)
+'''
 
 
 # Block until all pending messages are sent
