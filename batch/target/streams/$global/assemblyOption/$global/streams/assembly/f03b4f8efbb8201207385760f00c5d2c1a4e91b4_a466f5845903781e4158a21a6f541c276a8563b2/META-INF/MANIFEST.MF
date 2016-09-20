@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: 1.7.0_80 (Oracle Corporation)
+Implementation-Title: elasticsearch-hadoop
+Implementation-Version: 2.3.2
+Implementation-URL: http://github.com/elastic/elasticsearch-hadoop
+Implementation-Vendor: Elastic
+Implementation-Vendor-Id: org.elasticsearch.hadoop
+Repository-Revision: cae8b760fef6358557e7235cd4e469975531a7c5
+

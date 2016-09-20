@@ -19,7 +19,8 @@ def getAndSendJobs(url):
       #raise ApiError('GET /tasks/ {}'.format(resp.status_code))
       print('Error')
 
-   sendMessages(resp.json()['resultItemList'])
+   if 'resultItemList' in resp.json():
+      sendMessages(resp.json()['resultItemList'])
    return resp
 
 

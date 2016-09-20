@@ -1,15 +1,20 @@
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.SparkConf
+import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql._
+import org.elasticsearch.spark._
 
 object jobs_batch {
    def main(args: Array[String]) {
 
       // setup the Spark Context named sc
       val conf = new SparkConf().setAppName("jobs_batch")
+      conf.set("es.index.auto.create", "true")
+
       val sc = new SparkContext(conf)
-      val csqlcontext = SQLContext(sc)
+      val csqlContext = new SQLContext(sc)
+      import csqlContext.implicits._
 
       // folder on HDFS to pull the data from
       val diceFile = "hdfs://ec2-52-89-46-245.us-west-2.compute.amazonaws.com:9000/camus/exec/history/2016-09-16*"
@@ -30,12 +35,12 @@ object jobs_batch {
    /**
       val indeedSchema = (new StructType).add("snippet", StringType).add("city", StringType).add("state", StringType).add("date", StringType).add("url", StringType).add("country", StringType).add("formattedLocation", StringType).add("jobtitle", StringType).add("company", StringType).add("formattedLocationFull", StringType)
       val diceSchema = (new StructType).add("date", StringType).add("jobTitle", StringType).add("company", StringType).add("location", StringType).add("detailUrl", StringType)
-      val dfIndeed = csqlcontext.read.schema(indeedSchema).json(indeedStaticFile)
-      val dfDice = csqlcontext.read.schema(diceSchema).json(diceStaticFile)
+      val dfIndeed = csqlContext.read.schema(indeedSchema).json(indeedStaticFile)
+      val dfDice = csqlContext.read.schema(diceSchema).json(diceStaticFile)
    */
 
-      val indeedDF = csqlcontext.read.json(indeedStaticFile)
-      val diceDF = csqlcontext.read.json(diceStaticFile)
+      val indeedDF = csqlContext.read.json(indeedStaticFile)
+      val diceDF = csqlContext.read.json(diceStaticFile)
 
       indeedDF.show
       diceDF.show
@@ -45,19 +50,24 @@ object jobs_batch {
       indeedDF.registerTempTable("indeedTBL")
       diceDF.registerTempTable("diceTBL")
 
-      val newIndeedDF = csqlcontext.sql("SELECT jobtitle, company, url, formattedLocation as location, date, snippet FROM indeedTBL")
-      val newDiceDF = csqlcontext.sql("SELECT jobTItle as jobtitle, company, detailUrl as url, location, date , detailUrl as snippet FROM diceTBL")
+      val newIndeedDF = csqlContext.sql("SELECT jobtitle, company, url, formattedLocation as location, date, snippet FROM indeedTBL")
+      val newDiceDF = csqlContext.sql("SELECT jobTitle as jobtitle, company, detailUrl as url, location, date , detailUrl as snippet FROM diceTBL")
       newIndeedDF.registerTempTable("newIndeedTBL")
       newDiceDF.registerTempTable("newDiceTBL")
 
       // Join both DF contents
-      //val combinedDF = sqlContext.sql("SELECT jobtitle, company, url, location, date, snippet INTO newDiceTBL FROM newIndeedTBL")
-      val combinedDF = csqlcontext.sql("SELECT jobtitle, company, url, location, date, snippet FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, date, snippet FROM newIndeedTBL")
+      //val combinedDF = csqlContext.sql("SELECT jobtitle, company, url, location, date, snippet INTO newDiceTBL FROM newIndeedTBL")
+      val combinedDF = csqlContext.sql("SELECT jobtitle, company, url, location, date, snippet FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, date, snippet FROM newIndeedTBL")
       combinedDF.registerTempTable("combinedTBL")
 
       // Dedup rows
-      val combinedDedupDF = csqlcontext.sql("SELECT jobtitle, company, first(url), location, first(date), first(snippet) FROM combinedTBL GROUP BY jobtitle, company, location")   
+      val combinedDedupDF = csqlContext.sql("SELECT jobtitle, company, first(url), location, first(date), first(snippet) FROM combinedTBL GROUP BY jobtitle, company, location")   
 
-
+      //combinedDedupDF.rdd.saveToEs("jobs")
+      val cRDD: org.apache.spark.rdd.RDD[org.apache.spark.sql.Row] = combinedDedupDF.rdd
+      cRDD.saveToEs("jobs")
+      val es_df = csqlContext.read.format("org.elasticsearch.spark.sql").load("jobs")
+      es_df.show
+     
    }
 }   

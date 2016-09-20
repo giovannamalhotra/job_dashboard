@@ -4,7 +4,7 @@
 		module="jobs_batch_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20160916192748"
+		publication="20160920005222"
 	>
 		<description>
 		jobs_batch
@@ -35,5 +35,8 @@
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.10.5" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.10.5" conf="scala-tool->default,optional(default);compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-core_2.10" rev="1.6.1" conf="provided->default(compile)"/>
+		<dependency org="org.apache.spark" name="spark-sql_2.10" rev="1.6.1" conf="compile->default(compile)"/>
+		<dependency org="com.databricks" name="spark-csv_2.10" rev="1.5.0" conf="compile->default(compile)"/>
+		<dependency org="org.elasticsearch" name="elasticsearch-spark_2.10" rev="2.3.2" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
