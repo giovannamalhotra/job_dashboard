@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Implementation-Vendor: The Apache Software Foundation
+Implementation-Title: Storm Core
+Implementation-Version: 0.9.6
+Implementation-Vendor-Id: org.apache.storm
+Built-By: tgoetz
+Build-Jdk: 1.6.0_65
+Specification-Vendor: The Apache Software Foundation
+Specification-Title: Storm Core
+Created-By: Apache Maven 3.2.1
+Specification-Version: 0.9.6
+Archiver-Version: Plexus Archiver
+

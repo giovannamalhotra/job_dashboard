@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.0
+Created-By: 10.0-b23 (Sun Microsystems Inc.)
+Main-Class: org.jgrapht.demo.JGraphAdapterDemo
+Specification-Title: jgrapht
+Specification-Version: 0.8.1
+Implementation-Version: 0.8.1-jdk1.6
+Class-Path: lib/jgraph.jar
+
