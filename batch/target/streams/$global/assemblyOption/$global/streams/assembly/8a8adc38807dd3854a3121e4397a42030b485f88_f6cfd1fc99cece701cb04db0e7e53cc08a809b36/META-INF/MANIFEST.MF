@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.2
+Created-By: 1.7.0_71-b14 (Oracle Corporation)
+Main-Class: org.apache.pig.Main
+
+Name: org/apache/pig
+Implementation-Vendor: Apache
+Implementation-Title: Pig
+Implementation-Version: 0.15.0
+Build-TimeStamp: Jun 16 2015, 14:06:57
+Svn-Revision: 1685902
+

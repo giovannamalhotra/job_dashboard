@@ -1,0 +1,90 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1347212294756
+Build-Id: 1.14 ${buildNumber}
+Build-Jdk: 1.6.0_33
+Built-By: jerseyrobot
+Bundle-Activator: com.sun.jersey.core.osgi.Activator
+Bundle-Description: Jersey is the open source (under dual CDDL+GPL licen
+ se) JAX-RS (JSR 311)        production quality Reference Implementation
+  for building        RESTful Web services.
+Bundle-DocURL: http://www.oracle.com/
+Bundle-License: http://glassfish.java.net/public/CDDL+GPL_1_1.html, http
+ ://glassfish.java.net/public/CDDL+GPL_1_1.html
+Bundle-ManifestVersion: 2
+Bundle-Name: jersey-core
+Bundle-SymbolicName: com.sun.jersey.core
+Bundle-Vendor: Oracle Corporation
+Bundle-Version: 1.14.0
+Created-By: Apache Maven Bundle Plugin
+DynamicImport-Package: *
+Export-Package: javax.ws.rs;uses:="javax.ws.rs.core";version="1.1.1",jav
+ ax.ws.rs.core;uses:="javax.ws.rs.ext,javax.ws.rs";version="1.1.1",javax
+ .ws.rs.ext;uses:="javax.ws.rs.core,javax.ws.rs";version="1.1.1",com.sun
+ .jersey.core.provider.jaxb;uses:="javax.ws.rs,javax.ws.rs.ext,javax.xml
+ .bind,javax.ws.rs.core,javax.xml.parsers,com.sun.jersey.core.util,com.s
+ un.jersey.core.provider,org.xml.sax,com.sun.jersey.api.provider.jaxb,ja
+ vax.xml.transform.sax,javax.xml.bind.annotation,com.sun.jersey.core.imp
+ l.provider.entity,javax.xml.stream,javax.xml.transform,javax.xml.transf
+ orm.stream";version="1.14.0",com.sun.jersey.core.impl.provider.header;u
+ ses:="com.sun.jersey.core.header.reader,com.sun.jersey.spi,javax.ws.rs.
+ core,com.sun.jersey.core.header";version="1.14.0",com.sun.jersey.impl;u
+ ses:="com.sun.jersey.localization";version="1.14.0",com.sun.jersey.core
+ .util;uses:="com.sun.jersey.impl,javax.ws.rs.core,javax.xml.parsers";ve
+ rsion="1.14.0",com.sun.jersey.core.provider;uses:="com.sun.jersey.core.
+ util,javax.ws.rs.ext,javax.ws.rs.core";version="1.14.0",com.sun.jersey.
+ core.spi.scanning;uses:="com.sun.jersey.core.util,com.sun.jersey.core.s
+ pi.scanning.uri,com.sun.jersey.spi.service,com.sun.jersey.core.reflecti
+ on,com.sun.jersey.api.uri";version="1.14.0",com.sun.jersey.api.provider
+ .jaxb;version="1.14.0",com.sun.jersey.core.header;uses:="com.sun.jersey
+ .core.header.reader,javax.ws.rs.core,com.sun.jersey.core.util,com.sun.j
+ ersey.core.impl.provider.header,javax.ws.rs";version="1.14.0",com.sun.j
+ ersey.core.impl.provider.xml;uses:="javax.xml.parsers,com.sun.jersey.co
+ re.util,javax.ws.rs.core,com.sun.jersey.core.spi.component,com.sun.jers
+ ey.spi.inject,org.xml.sax,javax.xml.validation,org.xml.sax.helpers,com.
+ sun.jersey.impl,javax.xml.transform,javax.xml.stream";version="1.14.0",
+ com.sun.jersey.core.header.reader;uses:="javax.ws.rs.core,com.sun.jerse
+ y.core.header,com.sun.jersey.core.impl.provider.header";version="1.14.0
+ ",com.sun.jersey.core.osgi;uses:="org.osgi.framework,com.sun.jersey.cor
+ e.spi.scanning,com.sun.jersey.impl,com.sun.jersey.spi.service,com.sun.j
+ ersey.core.reflection,javax.ws.rs.ext";version="1.14.0",com.sun.jersey.
+ spi;uses:="javax.ws.rs.ext,javax.ws.rs.core";version="1.14.0",com.sun.j
+ ersey.spi.inject;uses:="com.sun.jersey.core.spi.component";version="1.1
+ 4.0",com.sun.jersey.localization;version="1.14.0",com.sun.jersey.core.s
+ pi.scanning.uri;uses:="com.sun.jersey.core.spi.scanning,com.sun.jersey.
+ core.util,com.sun.jersey.api.uri,javax.ws.rs.core";version="1.14.0",com
+ .sun.jersey.core.spi.component;uses:="com.sun.jersey.spi.inject,com.sun
+ .jersey.core.reflection,javax.ws.rs,com.sun.jersey.core.spi.factory,com
+ .sun.jersey.spi.service";version="1.14.0",com.sun.jersey.core.spi.facto
+ ry;uses:="com.sun.jersey.spi,com.sun.jersey.spi.service,javax.ws.rs.ext
+ ,com.sun.jersey.api.uri,javax.ws.rs.core,com.sun.jersey.core.spi.compon
+ ent,com.sun.jersey.spi.inject,javax.ws.rs,com.sun.jersey.core.header,co
+ m.sun.jersey.core.util,com.sun.jersey.core.reflection";version="1.14.0"
+ ,com.sun.jersey.core.spi.component.ioc;uses:="com.sun.jersey.core.spi.c
+ omponent,com.sun.jersey.spi.inject";version="1.14.0",com.sun.jersey.api
+ .representation;uses:="com.sun.jersey.core.util";version="1.14.0",com.s
+ un.jersey.core.reflection;uses:="javax.ws.rs,javax.ws.rs.core,com.sun.j
+ ersey.core.osgi,com.sun.jersey.impl";version="1.14.0",com.sun.jersey.co
+ re.impl.provider.entity;uses:="javax.ws.rs,com.sun.jersey.core.util,com
+ .sun.jersey.core.provider,javax.ws.rs.core,javax.activation,javax.xml.p
+ arsers,javax.xml.transform.dom,org.w3c.dom,org.xml.sax,javax.xml.transf
+ orm,javax.xml.transform.stream,com.sun.jersey.spi.inject,com.sun.jersey
+ .spi,javax.ws.rs.ext,com.sun.jersey.api.representation,javax.mail.inter
+ net,javax.mail.util,javax.mail,javax.imageio.stream,javax.imageio.spi,j
+ avax.imageio,javax.xml.transform.sax,com.sun.jersey.core.provider.jaxb,
+ javax.xml.bind,javax.xml.stream,javax.xml.bind.annotation,com.sun.jerse
+ y.impl";version="1.14.0",com.sun.jersey.spi.service;uses:="com.sun.jers
+ ey.impl,com.sun.jersey.core.reflection,com.sun.jersey.core.osgi";versio
+ n="1.14.0",com.sun.jersey.api.uri;uses:="javax.ws.rs,com.sun.jersey.cor
+ e.util,javax.ws.rs.core";version="1.14.0"
+Implementation-Title: jersey-core
+Implementation-Vendor: Oracle Corporation
+Implementation-Vendor-Id: com.sun.jersey
+Implementation-Version: 1.14
+Import-Package: javax.activation,javax.imageio,javax.imageio.spi,javax.i
+ mageio.stream,javax.mail;resolution:=optional,javax.mail.internet;resol
+ ution:=optional,javax.mail.util;resolution:=optional,javax.xml.bind,jav
+ ax.xml.bind.annotation,javax.xml.parsers,javax.xml.stream,javax.xml.tra
+ nsform,javax.xml.transform.dom,javax.xml.transform.sax,javax.xml.transf
+ orm.stream,javax.xml.validation,org.osgi.framework;version="[1.5,2)",or
+ g.w3c.dom,org.xml.sax,org.xml.sax.helpers
+Tool: Bnd-1.50.0

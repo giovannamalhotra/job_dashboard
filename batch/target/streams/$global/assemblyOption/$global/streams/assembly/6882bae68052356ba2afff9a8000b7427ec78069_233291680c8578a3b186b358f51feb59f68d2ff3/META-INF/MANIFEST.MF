@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: sush
+Build-Jdk: 1.7.0_79
+Specification-Title: Hive Shims 0.23
+Specification-Version: 1.2.1
+Specification-Vendor: The Apache Software Foundation
+Implementation-Title: Hive Shims 0.23
+Implementation-Version: 1.2.1
+Implementation-Vendor-Id: org.apache.hive.shims
+Implementation-Vendor: The Apache Software Foundation
+

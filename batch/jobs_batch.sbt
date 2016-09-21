@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
 )
 libraryDependencies += "org.elasticsearch" % "elasticsearch-spark_2.10" % "2.3.2"
 
-//libraryDependencies += "org.elasticsearch" % "elasticsearch-hadoop" % "2.2.0" % "compile"
+//libraryDependencies += "org.elasticsearch" % "elasticsearch-hadoop" % "2.3.2"
+
 //resolvers ++= Seq("clojars" at "https://clojars.org/repo",
 //                  "conjars" at "http://conjars.org/repo",
 //                  "plugins" at "http://repo.spring.io/plugins-release",

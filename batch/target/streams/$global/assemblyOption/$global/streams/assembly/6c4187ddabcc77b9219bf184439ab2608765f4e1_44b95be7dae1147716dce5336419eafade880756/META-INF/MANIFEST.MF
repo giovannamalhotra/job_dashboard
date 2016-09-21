@@ -1,0 +1,36 @@
+Manifest-Version: 1.0
+Export-Package: javax.security.auth.message;uses:="javax.security.auth
+ .login,javax.security.auth";version="1.0",javax.security.auth.message
+ .callback;uses:="javax.security.auth.callback,javax.security.auth,jav
+ ax.security.auth.x500,javax.crypto";version="1.0",javax.security.auth
+ .message.module;uses:="javax.security.auth.callback,javax.security.au
+ th.message";version="1.0",javax.security.auth.message.config;uses:="j
+ avax.security.auth.message,javax.security.auth,javax.security.auth.ca
+ llback";version="1.0"
+Private-Package: javax.security.auth.message,javax.security.auth.messa
+ ge.callback,javax.security.auth.message.module,javax.security.auth.me
+ ssage.config,
+Implementation-Title: Java Authentication SPI for Containers
+Implementation-Version: 1.0
+Built-By: david
+Tool: Bnd-0.0.311
+Bundle-Name: Java Authentication SPI for Containers
+Created-By: Apache Maven Bundle Plugin
+Bundle-Vendor: The Apache Software Foundation
+Build-Jdk: 1.6.0_07
+Bundle-Version: 1.0
+Bnd-LastModified: 1244507928211
+Bundle-ManifestVersion: 2
+Bundle-Description: Java Authentication Service Provider Interface for
+  Containers (JSR-196) api
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-DocURL: http://geronimo.apache.org/maven/specs/geronimo-jaspic_
+ 1.0_spec/1.0
+Bundle-SymbolicName: org.apache.geronimo.specs.geronimo-jaspic_1.0_spe
+ c
+Import-Package: javax.crypto,javax.security.auth,javax.security.auth.c
+ allback,javax.security.auth.login,javax.security.auth.message;version
+ ="1.0",javax.security.auth.message.callback;version="1.0",javax.secur
+ ity.auth.message.config;version="1.0",javax.security.auth.message.mod
+ ule;version="1.0",javax.security.auth.x500
+

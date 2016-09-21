@@ -11,14 +11,20 @@ object jobs_batch {
       // setup the Spark Context named sc
       val conf = new SparkConf().setAppName("jobs_batch")
       conf.set("es.index.auto.create", "true")
+      conf.set("es.resource", "dashboard/jobs")
 
+      //val sc = new SparkContext(conf)
       val sc = new SparkContext(conf)
+      //.hadoopConfiguration.set("fs.s3a.access.key", sys.env.getOrElse("AWS_ACCESS_KEY_ID", sys.error("missing AWS_ACCESS_KEY_ID")
+      //.hadoopConfiguration.set("fs.s3a.secret.key", sys.env.getOrElse("AWS_SECRET_ACCESS_KEY", sys.error("missing AWS_SECRET_ACCESS_KEY")
+
       val csqlContext = new SQLContext(sc)
       import csqlContext.implicits._
-
+      
       // folder on HDFS to pull the data from
       val diceFile = "hdfs://ec2-52-89-46-245.us-west-2.compute.amazonaws.com:9000/camus/exec/history/2016-09-16*"
-
+      val diceFileS3 = "s3a://giovanna-insight/raw_logs/secor_backup/diceFeed/"
+      
 
       // construct RDD[Sting]
       val indeedStaticFile = sc.parallelize(
@@ -42,6 +48,8 @@ object jobs_batch {
       val indeedDF = csqlContext.read.json(indeedStaticFile)
       val diceDF = csqlContext.read.json(diceStaticFile)
 
+      //val diceS3DF = csqlContext.read.json(diceFileS3)
+
       indeedDF.show
       diceDF.show
       indeedDF.printSchema()
@@ -62,12 +70,18 @@ object jobs_batch {
 
       // Dedup rows
       val combinedDedupDF = csqlContext.sql("SELECT jobtitle, company, first(url), location, first(date), first(snippet) FROM combinedTBL GROUP BY jobtitle, company, location")   
+      combinedDedupDF.show
 
-      //combinedDedupDF.rdd.saveToEs("jobs")
-      val cRDD: org.apache.spark.rdd.RDD[org.apache.spark.sql.Row] = combinedDedupDF.rdd
-      cRDD.saveToEs("jobs")
-      val es_df = csqlContext.read.format("org.elasticsearch.spark.sql").load("jobs")
-      es_df.show
+      combinedDedupDF.rdd.saveToEs("dashboard/jobs")
+      //sc.makeRDD(combinedDedupDF).saveToEs("dashboard/jobs")
+      combinedDedupDF.show
+
+      //EsSpark.saveJsonToEs(combinedDedupDF.rdd, "jobs/myApp")
+      
+      //val cRDD: org.apache.spark.rdd.RDD[org.apache.spark.sql.Row] = combinedDedupDF.rdd
+      //cRDD.saveToEs("job")
+      //val es_df = csqlContext.read.format("org.elasticsearch.spark.sql").load("jobs")
+      //es_df.show
      
    }
 }   
