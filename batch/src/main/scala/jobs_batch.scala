@@ -4,6 +4,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql._
 import org.elasticsearch.spark._
+import org.elasticsearch.spark.rdd.EsSpark
 
 object jobs_batch {
    def main(args: Array[String]) {
@@ -12,6 +13,10 @@ object jobs_batch {
       val conf = new SparkConf().setAppName("jobs_batch")
       conf.set("es.index.auto.create", "true")
       conf.set("es.resource", "dashboard/jobs")
+      conf.set("es.nodes", "localhost:9200")
+      //conf.set("es.nodes", "awsHost:9200")
+      //conf.set("spark.serializer", classOf[KryoSerializer].getName)
+      //conf.set("es.query", "?q=firstname:Daniel")
 
       //val sc = new SparkContext(conf)
       val sc = new SparkContext(conf)
@@ -74,7 +79,16 @@ object jobs_batch {
 
       combinedDedupDF.rdd.saveToEs("dashboard/jobs")
       //sc.makeRDD(combinedDedupDF).saveToEs("dashboard/jobs")
+      val finalRDD = combinedDedupDF.rdd
+      EsSpark.saveToEs(finalRDD, "dashboard/jobs")
+
       combinedDedupDF.show
+
+      // Send Data to Elasticsearch	
+      //combinedDedupDF.foreachRDD { rdd => {
+	// rdd.saveToEs("dashboard/jobs")
+	// }
+      //}
 
       //EsSpark.saveJsonToEs(combinedDedupDF.rdd, "jobs/myApp")
       
