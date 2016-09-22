@@ -36,11 +36,10 @@ feedStruct  = [StructField("jobtitle", StringType(), True),
         StructField("month", LongType(), True),
         StructField("year", LongType(), True),
         StructField("real", StringType(), True),
-        StructField("id", StringType(), True)
+        StructField("id", StringType(), True)]
 
 #result = es.search(index="dashboard", body={'query': {'match': {'jobtitle': 'data_engineering'}}})
 #print json.dumps(result, indent=2)
-
 
 def create_es_index():
    es_settings = {'number_of_shards':3, 'number_of_replicas': 2, 'refresh_interval': '1s', 'index.translog.flush_threshold_size': '1gb'}
