@@ -7,7 +7,7 @@ from pyspark.sql.types import *
 from elasticsearch import Elasticsearch
 from datetime import datetime
 
-#----- Define constants --------#
+#----------------------- Define constants ----------------------------#
 
 #Spark
 #SPARK_MASTER = os.environ['SPARK_MASTER']
@@ -20,26 +20,37 @@ ES_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com'
 ES_INDEX = 'dashboard'
 ES_TYPE = 'jobs'
 ES_RESOURCE = 'dashboard/jobs'
-
-print "ES_NODES:" + ES_NODES
-print "SPARK_MASTER:" + SPARK_MASTER
-
 es = Elasticsearch([{'host': ES_NODES}])
 
 #Amazon S3
 S3_BUCKET = 'giovanna-insight'
 
+# Shema structure
+feedStruct  = [StructField("jobtitle", StringType(), True),
+        StructField("company", StringType(), True),
+        StructField("url", StringType(), True),
+        StructField("location", StringType(), True),
+        StructField("snippet", StringType(), True),
+        StructField("date", StringType(), True),
+        StructField("day", LongType(), True),
+        StructField("month", LongType(), True),
+        StructField("year", LongType(), True),
+        StructField("real", StringType(), True),
+        StructField("id", StringType(), True)
 
 #result = es.search(index="dashboard", body={'query': {'match': {'jobtitle': 'data_engineering'}}})
 #print json.dumps(result, indent=2)
 
 
 def create_es_index():
-
    es_settings = {'number_of_shards':3, 'number_of_replicas': 2, 'refresh_interval': '1s', 'index.translog.flush_threshold_size': '1gb'}
    es_mapping = {"jobs ": {"properties": {"jobtitle ": { "type ": "string" }, "company ": { "type ": "string" }, "url ": { "type ": "string" }, "location ": { "type ": "string" },"date ": { "type ": "string"},"real ": { "type ": "string" }}}} 
    #return self.es.indices.create(index=ES_INDEX, body={'settings': es_settings, 'mappings': es_mapping}, ignore=400)
    response = es.indices.create(index=ES_INDEX, body={'settings': es_settings, 'mappings': es_mapping})
+
+
+
+
 
 
 if __name__ == '__main__':
@@ -63,6 +74,28 @@ if __name__ == '__main__':
 
    indeedDF = sqlContext.read.json(indeedFileS3)
    diceDF = sqlContext.read.json(diceFileS3)
+
+   indeedRDD = indeedDF.map(lambda row: pyspark.sql.Row(author=row.author, \
+                                                          body=row.body, \
+                                                          created_utc=row.created_utc, \
+                                                          day=datetime.utcfromtimestamp(float(row.created_utc)).day, \
+                                                          downs=row.downs, \
+                                                          id=row.id, \
+                                                          link_id=row.link_id, \
+                                                          month=datetime.utcfromtimestamp(float(row.created_utc)).month, \
+                                                          name=row.name, \
+                                                          parent_id=row.parent_id, \
+                                                          score=row.score, \
+                                                          subreddit=row.subreddit, \
+                                                          subreddit_id=row.subreddit_id, \
+                                                          ups=row.ups, \
+                                                          year=datetime.utcfromtimestamp(float(row.created_utc)).year))
+    
+    schema_filtered = StructType(fields)
+    reddit_filtered_df = sqlContext.createDataFrame(reddit_rdd, schema_filtered).persist(StorageLevel.DISK_ONLY)
+
+
+
 
    indeedDF.printSchema()
    diceDF.printSchema()
@@ -90,6 +123,8 @@ if __name__ == '__main__':
    #finalRDD.take(10)
 
    es_conf = {'es.nodes': ES_NODES, 'es.resource': ES_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
+
+
    finalRDD = combinedDedupDF.map(lambda row: ('key', row.asDict()))
    finalRDD.saveAsNewAPIHadoopFile(path='-', \
                                             outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
