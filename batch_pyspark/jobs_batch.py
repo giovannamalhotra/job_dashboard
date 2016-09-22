@@ -31,7 +31,7 @@ feedStruct  = [StructField("jobtitle", StringType(), True),
         StructField("url", StringType(), True),
         StructField("location", StringType(), True),
         StructField("snippet", StringType(), True),
-        StructField("date", StringType(), True),
+        #StructField("date", StringType(), True),
         StructField("day", LongType(), True),
         StructField("month", LongType(), True),
         StructField("year", LongType(), True),
@@ -50,14 +50,11 @@ def create_es_index():
 
 
 
-
-
-
 if __name__ == '__main__':
 
    print "****************** Result = TEST  **********************"   
-   sc = SparkContext('spark://' + SPARK_MASTER + ':7077', 'jobs_batch')
    #sc = SparkContext("local", "Jobs batch App")
+   sc = SparkContext('spark://' + SPARK_MASTER + ':7077', 'jobs_batch')
    sqlContext = SQLContext(sc)
 
    if not es.indices.exists(ES_INDEX):
@@ -65,8 +62,8 @@ if __name__ == '__main__':
 
    # folder on HDFS and Amazon S3 to pull the data from
    #val diceFile = "hdfs://ec2-52-89-46-245.us-west-2.compute.amazonaws.com:9000/camus/exec/history/2016-09-16*"
-   diceFileS3 = "s3a://giovanna-insight/raw_logs/secor_backup/diceFeed/*"
    indeedFileS3 = "s3a://giovanna-insight/raw_logs/secor_backup/indeedFeed/*"
+   diceFileS3 = "s3a://giovanna-insight/raw_logs/secor_backup/diceFeed/*"
        
    # construct RDD[Sting]
    #indeedStaticFile = 'json1.json'
@@ -75,48 +72,59 @@ if __name__ == '__main__':
    indeedDF = sqlContext.read.json(indeedFileS3)
    diceDF = sqlContext.read.json(diceFileS3)
 
-   indeedRDD = indeedDF.map(lambda row: pyspark.sql.Row(author=row.author, \
-                                                          body=row.body, \
-                                                          created_utc=row.created_utc, \
-                                                          day=datetime.utcfromtimestamp(float(row.created_utc)).day, \
-                                                          downs=row.downs, \
-                                                          id=row.id, \
-                                                          link_id=row.link_id, \
-                                                          month=datetime.utcfromtimestamp(float(row.created_utc)).month, \
-                                                          name=row.name, \
-                                                          parent_id=row.parent_id, \
-                                                          score=row.score, \
-                                                          subreddit=row.subreddit, \
-                                                          subreddit_id=row.subreddit_id, \
-                                                          ups=row.ups, \
-                                                          year=datetime.utcfromtimestamp(float(row.created_utc)).year))
-    
-    schema_filtered = StructType(fields)
-    reddit_filtered_df = sqlContext.createDataFrame(reddit_rdd, schema_filtered).persist(StorageLevel.DISK_ONLY)
-
-
-
-
    indeedDF.printSchema()
    diceDF.printSchema()
 
+   # Transform data to extract only the elements that are needed
+   feedSchema = StructType(fields)
+ 
+   indeedRDD = indeedDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobtitle, \
+                                                          company=row.company, \
+                                                          url=row.url, \
+                                                          location=row.formattedLocation, \
+                                                          snippet=row.snippet, \
+                                                          day=datetime.utcfromtimestamp(float(row.date)).day, \
+                                                          month=datetime.utcfromtimestamp(float(row.date)).month, \
+                                                          year=datetime.utcfromtimestamp(float(row.created_utc)).year, \
+                                                          real='yes'))
+   filteredIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
+
+
+   diceRDD = diceDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobTitle, \
+                                                          company=row.company, \
+                                                          url=row.detailUrl, \
+                                                          location=row.location, \
+                                                          snippet=row.detailUrl, \
+                                                          day=row.date[8:10], \
+                                                          month=row.date[5:7], \
+                                                          year=row.date[0:4], \
+                                                          real='yes'))
+
+   filteredDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
+
+   filteredIndeedDF.registerTempTable("newIndeedTBL")
+   filteredDiceDF.registerTempTable("newDiceTBL")
+
+   '''
    indeedDF.registerTempTable("indeedTBL")
    diceDF.registerTempTable("diceTBL")
 
    newIndeedDF = sqlContext.sql("SELECT jobtitle, company, url, formattedLocation as location, date, snippet FROM indeedTBL")
-   newDiceDF = sqlContext.sql("SELECT jobTitle as jobtitle, company, detailUrl as url, location, date , detailUrl as snippet FROM diceTBL")
+   newDiceDF = sqlContext.sql("SELECT jobTitle as jobtitle, company, detailUrl as url, location, date, detailUrl as snippet FROM diceTBL")
    newIndeedDF.printSchema()
    newDiceDF.printSchema()
 
    newIndeedDF.registerTempTable("newIndeedTBL")
    newDiceDF.registerTempTable("newDiceTBL")
+   '''
 
    # Join both DF contents
-   combinedDF = sqlContext.sql("SELECT jobtitle, company, url, location, date, snippet FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, date, snippet FROM newIndeedTBL")
+   #combinedDF = sqlContext.sql("SELECT jobtitle, company, url, location, date, snippet FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, date, snippet FROM newIndeedTBL")
+   combinedDF = sqlContext.sql("SELECT jobtitle, company, url, location, snippet, day, month, year, real FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, snippet, day, month, year, real FROM newIndeedTBL")
    combinedDF.registerTempTable("combinedTBL")
 
    # Dedup rows
-   combinedDedupDF = sqlContext.sql("SELECT jobtitle, company, location, first(url) as url, first(date) as date, first(snippet) as snippet FROM combinedTBL GROUP BY jobtitle, company, location")   
+   combinedDedupDF = sqlContext.sql("SELECT jobtitle, company, location, first(url) as url, first(snippet) as snippet, first(day) as day, first(month) as month, first(year) as year FROM combinedTBL GROUP BY jobtitle, company, location")   
 
    combinedDedupDF.printSchema() 
    #finalRDD = combinedDedupDF.rdd
