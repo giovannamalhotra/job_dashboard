@@ -1,0 +1,20 @@
+body {
+  padding: 2rem;
+  padding-top: 4rem;
+}
+.title {
+  margin-top: 4rem;
+  margin-bottom: 2rem;	
+  text-align: center;
+  font-size: 3rem;
+}
+
+.subtitle {
+  padding: 1rem 0;
+  text-align: left;
+  font-weight: bold;
+}
+
+.searchBtn {
+	margin-top: 2.5rem;
+}

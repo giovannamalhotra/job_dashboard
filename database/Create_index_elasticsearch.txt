@@ -1,0 +1,24 @@
+
+curl -XPUT 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/' -d '{               
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 3,
+            "number_of_replicas" : 2
+        }
+    }
+}'
+
+
+curl -XPOST 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/' -d '{               
+"mappings": {"jobs ": {"properties": {"jobtitle ": { "type ": "string" }, "company ": { "type ": "string" }, "url ": { "type ": "string" }, "location ": { "type ": "string" },"date ": { "type ": "string"},"real ": { "type ": "string" }}}}
+}'
+
+
+curl http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/_stats/indexes\?pretty\=1
+
+curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/_mapping/jobs'
+
+
+curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/jobs/job1" -d '{"company" : "LinkedIn", "date:" : "2016-09-20", "jobtitle" : "data_engineering", "location" : "San Francisco, CA", "real" : "yes"}'
+
+curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/jobs/job1'
