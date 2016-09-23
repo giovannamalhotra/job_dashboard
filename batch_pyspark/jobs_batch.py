@@ -35,8 +35,8 @@ feedStruct  = [StructField("jobtitle", StringType(), True),
         StructField("day", LongType(), True),
         StructField("month", LongType(), True),
         StructField("year", LongType(), True),
-        StructField("real", StringType(), True),
-        StructField("id", StringType(), True)]
+        #StructField("id", StringType(), True),
+        StructField("real", StringType(), True)]
 
 #result = es.search(index="dashboard", body={'query': {'match': {'jobtitle': 'data_engineering'}}})
 #print json.dumps(result, indent=2)
@@ -75,7 +75,7 @@ if __name__ == '__main__':
    diceDF.printSchema()
 
    # Transform data to extract only the elements that are needed
-   feedSchema = StructType(fields)
+   feedSchema = StructType(feedStruct)
  
    indeedRDD = indeedDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobtitle, \
                                                           company=row.company, \
