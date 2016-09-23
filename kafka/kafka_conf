@@ -1,0 +1,9 @@
+[TwitterConfig]
+consumerkey = 
+consumersecret = 
+accesstoken = 
+accesssecret = 
+
+[KafkaConfig]
+kafka_node_dns = ec2-52-89-43-209.us-west-2.compute.amazonaws.com
+twitter_topic = tweetsFeed
