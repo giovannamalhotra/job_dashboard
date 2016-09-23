@@ -3,21 +3,18 @@ import tweepy
 #from tweepy import Stream
 #from tweepy import OAuthHandler
 #from tweepy.streaming import StreamListener
-
+import os
 import json
 from kafka import KafkaProducer
-import ConfigParser
 
-# Load config
-config = ConfigParser.ConfigParser()
-config.read("kafka.conf")
+# Make sure these variables are exported in a bash file anywhere in the host where this program is run
+ckey = os.environ['consumerkey']
+csecret = os.environ['consumersecret']
+atoken = os.environ['accesstoken']
+asecret = os.environ['accesssecret']
+kafka_node_dns = os.environ['kafka_node_dns']
+topic = os.environ['twitter_topic']
 
-ckey = config.get('KafkaConfig', 'ckey')
-csecret = config.get('KafkaConfig', 'csecret')
-atoken = config.get('KafkaConfig', 'atoken')
-asecret = config.get('KafkaConfig', 'asecret')
-kafka_node_dns = config.get('KafkaConfig', 'kafka_node_dns')
-topic = config.get('KafkaConfig', 'twitterTopic')
 
 producer = KafkaProducer(bootstrap_servers = kafka_node_dns + ':9092')
 
