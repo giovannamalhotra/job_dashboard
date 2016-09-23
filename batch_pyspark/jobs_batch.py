@@ -32,18 +32,18 @@ feedStruct  = [StructField("jobtitle", StringType(), True),
         StructField("location", StringType(), True),
         StructField("snippet", StringType(), True),
         #StructField("date", StringType(), True),
+        #StructField("id", StringType(), True),
         StructField("day", LongType(), True),
         StructField("month", LongType(), True),
         StructField("year", LongType(), True),
-        #StructField("id", StringType(), True),
-        StructField("real", StringType(), True)]
+        StructField("origin", StringType(), True)]
 
 #result = es.search(index="dashboard", body={'query': {'match': {'jobtitle': 'data_engineering'}}})
 #print json.dumps(result, indent=2)
 
 def create_es_index():
    es_settings = {'number_of_shards':3, 'number_of_replicas': 2, 'refresh_interval': '1s', 'index.translog.flush_threshold_size': '1gb'}
-   es_mapping = {"jobs ": {"properties": {"jobtitle ": { "type ": "string" }, "company ": { "type ": "string" }, "url ": { "type ": "string" }, "location ": { "type ": "string" },"date ": { "type ": "string"},"real ": { "type ": "string" }}}} 
+   es_mapping = {"jobs ": {"properties": {"jobtitle": { "type": "string" }, "company": { "type": "string" }, "url ": { "type": "string" }, "location": { "type": "string" }, "snippet": { "type": "string" }, "date": { "type ": "string"}, "origin": { "type ": "string" }}}} 
    #return self.es.indices.create(index=ES_INDEX, body={'settings': es_settings, 'mappings': es_mapping}, ignore=400)
    response = es.indices.create(index=ES_INDEX, body={'settings': es_settings, 'mappings': es_mapping})
 
@@ -89,8 +89,8 @@ if __name__ == '__main__':
                                                           day=datetime.strptime(row.date, dateFormat).day, \
                                                           month=datetime.strptime(row.date, dateFormat).month, \
                                                           year=datetime.strptime(row.date, dateFormat).year, \
-                                                          real='yes'))
-   filteredIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
+                                                          origin='Indeed'))
+   transformedIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
 
 
    diceRDD = diceDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobTitle, \
@@ -101,33 +101,31 @@ if __name__ == '__main__':
                                                           day=row.date[8:10], \
                                                           month=row.date[5:7], \
                                                           year=row.date[0:4], \
-                                                          real='yes'))
+                                                          origin='Dice'))
 
-   filteredDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
+   transformedDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
 
-   filteredIndeedDF.registerTempTable("newIndeedTBL")
-   filteredDiceDF.registerTempTable("newDiceTBL")
 
-   '''
-   indeedDF.registerTempTable("indeedTBL")
-   diceDF.registerTempTable("diceTBL")
+   print "--------------------------------filteredIndeedDF schema -------------------------------"
+   transformedIndeedDF.printSchema()
+   print "--------------------------------filteredDiceDF schema -------------------------------"
+   transformedDiceDF.printSchema()
+   print "--------------------------------indeed and Dice data -------------------------------"
+   indeedDF.take(10)
+   diceDF.take(10)
 
-   newIndeedDF = sqlContext.sql("SELECT jobtitle, company, url, formattedLocation as location, date, snippet FROM indeedTBL")
-   newDiceDF = sqlContext.sql("SELECT jobTitle as jobtitle, company, detailUrl as url, location, date, detailUrl as snippet FROM diceTBL")
-   newIndeedDF.printSchema()
-   newDiceDF.printSchema()
 
-   newIndeedDF.registerTempTable("newIndeedTBL")
-   newDiceDF.registerTempTable("newDiceTBL")
-   '''
+   transformedIndeedDF.registerTempTable("newIndeedTBL")
+   transformedDiceDF.registerTempTable("newDiceTBL")
 
    # Join both DF contents
    #combinedDF = sqlContext.sql("SELECT jobtitle, company, url, location, date, snippet FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, date, snippet FROM newIndeedTBL")
-   combinedDF = sqlContext.sql("SELECT jobtitle, company, url, location, snippet, day, month, year, real FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, snippet, day, month, year, real FROM newIndeedTBL")
+   #combinedDF = sqlContext.sql("SELECT jobtitle, company, url, location, snippet, day, month, year, real,  FROM newDiceTBL UNION ALL SELECT jobtitle, company, url, location, snippet, day, month, year, real FROM newIndeedTBL")
+   combinedDF = sqlContext.sql("SELECT *  FROM newDiceTBL UNION ALL SELECT * FROM newIndeedTBL")
    combinedDF.registerTempTable("combinedTBL")
 
    # Dedup rows
-   combinedDedupDF = sqlContext.sql("SELECT jobtitle, company, location, first(url) as url, first(snippet) as snippet, first(day) as day, first(month) as month, first(year) as year FROM combinedTBL GROUP BY jobtitle, company, location")   
+   combinedDedupDF = sqlContext.sql("SELECT jobtitle, company, location, first(url) as url, first(snippet) as snippet, first(day) as day, first(month) as month, first(year) as year, first(origin) as origin FROM combinedTBL GROUP BY jobtitle, company, location")   
 
    combinedDedupDF.printSchema() 
    #finalRDD = combinedDedupDF.rdd
