@@ -76,15 +76,19 @@ if __name__ == '__main__':
 
    # Transform data to extract only the elements that are needed
    feedSchema = StructType(feedStruct)
+   dateFormat = "%a, %d %b %Y %H:%M:%S %Z"
  
    indeedRDD = indeedDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobtitle, \
                                                           company=row.company, \
                                                           url=row.url, \
                                                           location=row.formattedLocation, \
                                                           snippet=row.snippet, \
-                                                          day=datetime.utcfromtimestamp(float(row.date)).day, \
-                                                          month=datetime.utcfromtimestamp(float(row.date)).month, \
-                                                          year=datetime.utcfromtimestamp(float(row.created_utc)).year, \
+                                                          #day=datetime.utcfromtimestamp(float(row.date)).day, \
+                                                          #month=datetime.utcfromtimestamp(float(row.date)).month, \
+                                                          #year=datetime.utcfromtimestamp(float(row.created_utc)).year, \
+                                                          day=datetime.strptime(row.date, dateFormat).day, \
+                                                          month=datetime.strptime(row.date, dateFormat).month, \
+                                                          year=datetime.strptime(row.date, dateFormat).year, \
                                                           real='yes'))
    filteredIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
 
