@@ -16,7 +16,12 @@ SPARK_MASTER = 'ec2-52-89-46-245.us-west-2.compute.amazonaws.com'
 # Elasticsearch
 #ES_NODES = os.environ['ES_NODES']
 #ES_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200'
+
 ES_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com'
+#ES_NODES = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200','ec2-54-68-213-131.us-west-2.compute.amazonaws.com:9200','ec2-52-43-52-129.us-west-2.compute.amazonaws.com:9200'])
+#ES_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com,ec2-54-68-213-131.us-west-2.compute.amazonaws.com,ec2-52-43-52-129.us-west-2.compute.amazonaws.com'
+
+
 ES_INDEX = 'dashboard'
 ES_TYPE = 'jobs'
 ES_RESOURCE = 'dashboard/jobs'
@@ -111,8 +116,8 @@ if __name__ == '__main__':
    print "--------------------------------filteredDiceDF schema -------------------------------"
    transformedDiceDF.printSchema()
    print "--------------------------------indeed and Dice data -------------------------------"
-   indeedDF.take(10)
-   diceDF.take(10)
+   transformedIndeedDF.show
+   transformedDiceDF.show
 
 
    transformedIndeedDF.registerTempTable("newIndeedTBL")
