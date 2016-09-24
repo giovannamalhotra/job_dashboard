@@ -12,16 +12,27 @@ import json
 
 companyList = []
 
+# Set Elasticsearch configuration to save tweets
+ES_WRITE_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com'
+ES_WRITE_INDEX = 'dashboard'
+ES_WRITE_TYPE = 'tweets'
+ES_WRITE_RESOURCE = 'dashboard/jobs'
+es_tweets = Elasticsearch([{'host': ES_WRITE_NODES}])
+
+# Set Elasticsearch configuration to get list of companies
+ES_COMPANY_INDEX = 'dashboard'
+ES_COMPANY_TYPE = 'company'
+es_company = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200','ec2-54-68-213-131.us-west-2.compute.amazonaws.com:9200','ec2-52-43-52-129.us-west-2.compute.amazonaws.com:9200'])
+
+
+
 # -------------------------------------------------------------
 # --- Get company list from Database
 # -------------------------------------------------------------
 def getCompanies():
-   # Get companies list and load it to memory
-   INDEX_NAME = 'dashboard'
-   TYPE_NAME = 'company'
-   es = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200','ec2-54-68-213-131.us-west-2.compute.amazonaws.com:9200','ec2-52-43-52-129.us-west-2.compute.amazonaws.com:9200'])
 
-   res = es.search(index = INDEX_NAME, doc_type=TYPE_NAME, body={"query": {"match_all": {}}})
+   # Get companies list and load it to memory
+   res = es_company.search(index = ES_COMPANY_INDEX, doc_type=ES_COMPANY_TYPE, body={"query": {"match_all": {}}})
    jsonRes =  json.dumps(res, indent=2)
    print jsonRes
 
@@ -38,6 +49,15 @@ def processStreamRDD(rdd):
    # process each RDD from each micro batch      
    print 'Inside processStreamRDD method is empty for now...'
 
+   es_conf = {'es.nodes': ES_WRITE_NODES, 'es.resource': ES_WRITE_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
+
+
+   # !!!!!!! Read tweets from each RDD and extract only "text". Create a new RDD with only tweet text
+   finalRDD.saveAsNewAPIHadoopFile(path='-', \
+                                            outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+                                            keyClass='org.apache.hadoop.io.NullWritable', \
+                                            valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+                                            conf=es_conf)
 
 
 # -------------------------------------------------------------
@@ -45,8 +65,11 @@ def processStreamRDD(rdd):
 # -------------------------------------------------------------
 if __name__ == "__main__":
 
+    # Load companies
     getCompanies()
 
+
+    # Set Spark Streaming 
     sc = SparkContext(appName="streamingFromKafka")
     ssc = StreamingContext(sc, 2)   # every 2 seconds
 
@@ -67,17 +90,12 @@ if __name__ == "__main__":
     #hashablebrokers = frozenset(kafkabrokers.items())
     #kafkastream = KafkaUtils.createDirectStream(ssc, [topics], hashablebrokers)
 
-
-    '''
     kafkastream = KafkaUtils.createDirectStream(ssc, ['tweetsFeed'], {"metadata.broker.list": brokers})
 
     lines = kafkastream.map(lambda x: x[1])
     linesRDDCollection = lines.flatMap(lambda line: line.split(" "))
     linesRDDCollection.foreachRDD(lambda rdd: processStreamRDD(rdd))
-    '''
-    
-    
 
-
+      
     ssc.start()
     ssc.awaitTermination()
