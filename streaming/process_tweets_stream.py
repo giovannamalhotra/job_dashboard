@@ -34,7 +34,7 @@ def getCompanies():
 # -------------------------------------------------------------
 # --- Process RDD in each stream micro batch
 # -------------------------------------------------------------
-def processStreamRDD():
+def processStreamRDD(rdd):
    # process each RDD from each micro batch      
    print 'Inside processStreamRDD method is empty for now...'
 
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     lines = kafkastream.map(lambda x: x[1])
     linesRDDCollection = lines.flatMap(lambda line: line.split(" "))
-    linesRDDCollection.foreachRDD(lambda rdd: rdd.take(10))
+    linesRDDCollection.foreachRDD(lambda rdd: processStreamRDD(rdd))
     '''
     
     
