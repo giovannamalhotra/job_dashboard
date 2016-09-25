@@ -11,52 +11,38 @@ es = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200
 #@app.route('/')
 @app.route('/index')
 def index():
-  #user = { 'nickname': 'Giovanna' } #fake user
-  #mylist = [1,2,3,4]
-  #return render_template("index.html", title = 'Home', user = user, mylist = mylist)
   
-  #res = es.search(index="dashboard", body={'query': {'match': {'description': 'CIA'}}})
-  #res = es.search(index = INDEX_NAME, size = 50, body={"query": {"match_all": {}}})
   res = es.search(index = INDEX_NAME, size = 500, body={"query": {"match_all": {}}})
-  jsonRes =  json.dumps(res, indent=2)
+  json_res =  json.dumps(res, indent=2)
   
-  resultList = []
-  for hit in res['hits']['hits']:
-    #resultList.append(json.dumps(hit["_source"]))
-    jsonStr = {'url': hit["_source"]["url"], 'jobtitle': hit["_source"]["jobtitle"], 'company': hit["_source"]["company"], 'location': hit["_source"]["location"]}
-    print "jsonStr:" + str(jsonStr)
-    resultList.append(json.dumps(str(jsonStr))) 
-
-
-  return render_template("index.html", jsonResult = jsonRes, resultList = resultList)
-  #return render_template("index.html", jsonResult = jsonify(jsonRes))
+  return render_template("index.html", jsonResult = json_res)
 
 
 @app.route('/search', methods=['POST'])
 def search():
     req_json = request.get_json();   
+    print req_json
 
-    criteriaArr = []
-    if req_json.jobtitle.strip() <> '':
-       criteria = { "match": { "jobtitle": req_json.jobtitle.strip() }}
-       criteriaArr.append(criteria)
+    criteria_list = []
+    if req_json["jobtitle"].strip():
+       criteria = { "match": { "jobtitle": req_json["jobtitle"].strip() }}
+       criteria_list.append(criteria)
 
-    if req_json.company.strip() <> '':
-       criteria = { "match": { "company": req_json.company.strip() }}
-       criteriaArr.append(criteria)
+    if req_json["company"].strip():
+       criteria = { "match": { "company": req_json["company"].strip() }}
+       criteria_list.append(criteria)
 
-    if req_json.location.strip() <> '':
-       criteria = { "match": { "location": req_json.location.strip() }}
-       criteriaArr.append(criteria)
+    if req_json["location"].strip():
+       criteria = { "match": { "location": req_json["location"].strip() }}
+       criteria_list.append(criteria)
 
-    criteriaString = ', '.join(str(e) for e in criteriaArr)
-    criteriaJSON = json.loads(criteriaString)
 
-    search_json = {'query': { "bool": {  "should": [ criteriaJSON ] } } }
+    search_json = {'query': { "bool": {  "should": criteria_list } } }
+    print search_json
 
-    res = es.search(index="dashboard", doc_type="jobs", body={'query': { "bool": {  "should": [ criteriaJSON ] } } })
-  
-    return json.dumps({'status':'OK','req_json':req_json}, 'resJSON':res);
+    res = es.search(index="dashboard", doc_type="jobs", body={'query': { "bool": {  "should": criteria_list } } })
+     
+    return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res});
 
 
 
