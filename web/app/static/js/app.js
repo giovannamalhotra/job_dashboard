@@ -7,6 +7,7 @@ console.log("Hello from app.js")
 
 function displayResults(jsonList) {
 	console.log(jsonList)
+
 }
 
 

@@ -22,7 +22,11 @@ def index():
   
   resultList = []
   for hit in res['hits']['hits']:
-    resultList.append(hit["_source"])
+    #resultList.append(json.dumps(hit["_source"]))
+    jsonStr = {'url': hit["_source"]["url"], 'jobtitle': hit["_source"]["jobtitle"], 'company': hit["_source"]["company"], 'location': hit["_source"]["location"]}
+    print "jsonStr:" + str(jsonStr)
+    resultList.append(json.dumps(str(jsonStr))) 
+
 
   return render_template("index.html", jsonResult = jsonRes, resultList = resultList)
   #return render_template("index.html", jsonResult = jsonify(jsonRes))
@@ -30,8 +34,5 @@ def index():
 
 @app.route('/search', methods=['POST'])
 def search():
-    #user =  request.form['username'];
-    #password = request.form['password'];
-
     req_json = request.get_json();   
     return json.dumps({'status':'OK','req_json':req_json});
