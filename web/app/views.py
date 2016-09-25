@@ -35,4 +35,28 @@ def index():
 @app.route('/search', methods=['POST'])
 def search():
     req_json = request.get_json();   
-    return json.dumps({'status':'OK','req_json':req_json});
+
+    criteriaArr = []
+    if req_json.jobtitle.strip() <> '':
+       criteria = { "match": { "jobtitle": req_json.jobtitle.strip() }}
+       criteriaArr.append(criteria)
+
+    if req_json.company.strip() <> '':
+       criteria = { "match": { "company": req_json.company.strip() }}
+       criteriaArr.append(criteria)
+
+    if req_json.location.strip() <> '':
+       criteria = { "match": { "location": req_json.location.strip() }}
+       criteriaArr.append(criteria)
+
+    criteriaString = ', '.join(str(e) for e in criteriaArr)
+    criteriaJSON = json.loads(criteriaString)
+
+    search_json = {'query': { "bool": {  "should": [ criteriaJSON ] } } }
+
+    res = es.search(index="dashboard", doc_type="jobs", body={'query': { "bool": {  "should": [ criteriaJSON ] } } })
+  
+    return json.dumps({'status':'OK','req_json':req_json}, 'resJSON':res);
+
+
+
