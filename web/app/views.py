@@ -1,6 +1,5 @@
 from app import app
-from flask import render_template
-from flask import request
+from flask import render_template, request, jsonify
 from elasticsearch import Elasticsearch
 import json
 
@@ -22,6 +21,7 @@ def index():
   jsonRes =  json.dumps(res, indent=2)
 
   return render_template("index.html", jsonResult = jsonRes)
+  #return render_template("index.html", jsonResult = jsonify(jsonRes))
 
 
 @app.route('/search', methods=['POST'])

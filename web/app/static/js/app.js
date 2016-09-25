@@ -7,6 +7,8 @@ console.log("Hello from app.js")
 
 function displayResults(jsonResult) {
 	console.log(jsonResult)
+    console.log("---------")
+    console.log(JSON.stringify(jsonResult))
 }
 
 
