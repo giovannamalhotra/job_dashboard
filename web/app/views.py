@@ -42,7 +42,10 @@ def search():
 
     res = es.search(index="dashboard", doc_type="jobs", body={'query': { "bool": {  "should": criteria_list } } })
      
-    return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res});
+    #return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res});
+    return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res['hits']['hits']});
+
+
 
 
 

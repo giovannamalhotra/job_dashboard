@@ -2,15 +2,6 @@
 Javascript for job dashboard app
 */
 
-console.log("Hello from app.js")
-
-
-function displayResults(jsonList) {
-	console.log(jsonList)
-
-}
-
-
 function search() {
 
     var jobtitle = $('#jobtitleInput').val();
@@ -30,6 +21,9 @@ function search() {
         type: 'POST',
         success: function(response) {
             console.log("Ajax response:" + response);
+
+                
+
         },
         error: function(error) {
             console.log(error);
