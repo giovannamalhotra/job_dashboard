@@ -18,7 +18,7 @@ function search() {
  
  	var inputData = {'jobtitle': jobtitle, 'company': company, 'location': location};
 
- 	console.log("input: " + input)
+ 	console.log("inputData: " + inputData)
 
 
     $.ajax({
