@@ -5,10 +5,8 @@ Javascript for job dashboard app
 console.log("Hello from app.js")
 
 
-function displayResults(jsonResult) {
-	console.log(jsonResult)
-    console.log("---------")
-    console.log(JSON.stringify(jsonResult))
+function displayResults(jsonList) {
+	console.log(jsonList)
 }
 
 

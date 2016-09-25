@@ -19,8 +19,12 @@ def index():
   #res = es.search(index = INDEX_NAME, size = 50, body={"query": {"match_all": {}}})
   res = es.search(index = INDEX_NAME, size = 500, body={"query": {"match_all": {}}})
   jsonRes =  json.dumps(res, indent=2)
+  
+  resultList = []
+  for hit in res['hits']['hits']:
+    resultList.append(hit["_source"])
 
-  return render_template("index.html", jsonResult = jsonRes)
+  return render_template("index.html", jsonResult = jsonRes, resultList = resultList)
   #return render_template("index.html", jsonResult = jsonify(jsonRes))
 
 
@@ -29,5 +33,5 @@ def search():
     #user =  request.form['username'];
     #password = request.form['password'];
 
-    req_json =  request.get_json();   
+    req_json = request.get_json();   
     return json.dumps({'status':'OK','req_json':req_json});
