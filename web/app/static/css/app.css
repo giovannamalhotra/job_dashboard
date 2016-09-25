@@ -4,7 +4,7 @@ body {
 }
 .title {
   margin-top: 4rem;
-  margin-bottom: 2rem;	
+  margin-bottom: 4rem;	
   text-align: center;
   font-size: 3rem;
 }
@@ -16,5 +16,24 @@ body {
 }
 
 .searchBtn {
-	margin-top: 2.5rem;
+	margin-top: 0.5rem;
+  border-radius: 0;
+  width: 100%;
+  min-width: 8rem;
 }
+
+input.form-control {
+  padding: 0.5rem;
+  border-radius: 0;
+}
+
+.centerContent {
+  text-align: center;
+}
+
+
+@media (min-width: @screen-md-min) {
+
+  .searchBtn { width: auto;}
+
+}    

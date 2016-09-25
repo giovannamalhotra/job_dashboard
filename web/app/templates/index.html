@@ -42,34 +42,53 @@
  </head>
   <body>
     <div class="title">Job Dashboard</div>
-    <div class="subtitle">Postings:</div>
 
     <div class="row">
-      <div class="col-xs-1 col-md-3">
-          <div class="form-group">
-            <label for="JobTitleInput">Job Title</label>
-            <input type="text" id="JobTitleInput" class="form-control" placeholder="Job Title keywords">
+      <div class="col-xs-1 col-md-1"></div>
+      <div class="col-xs-10 col-md-10">
+        <div class="row">
+          <div class="col-xs-12 col-md-3">
+              <div class="form-group">
+                <label class="hidden-xs hidden-sm" for="JobTitleInput">Job Title</label>
+                <input type="text" id="jobtitleInput" class="form-control" placeholder="Job Title">
+              </div>
           </div>
+          <div class="col-xs-12 col-md-3">
+              <div class="form-group">
+                <label class="hidden-xs hidden-sm" for="JobTitleInput">Company</label>
+                <input type="text" id="companyInput" class="form-control" placeholder="Company">
+              </div>
+          </div>
+          <div class="col-xs-12 col-md-4">
+              <div class="form-group">
+                <label class="hidden-xs hidden-sm" for="JobTitleInput">Location</label>
+                <input type="text" id="locationInput" class="form-control" placeholder="Location">
+              </div>    
+          </div>
+          <div class="col-xs-12 col-md-1 centerContent">
+              <div class="form-group ">
+               <button class="searchBtn btn btn-primary btn-default">Search</button>
+              </div>    
+          </div>
+        </div>
       </div>
-      <div class="col-xs-10 col-md-6">
-          <div class="form-group">
-            <label for="JobTitleInput">Location</label>
-            <input type="text" id="JobTitleInput" class="form-control" placeholder="Location">
-          </div>    
-      </div>
-      <div class="col-xs-1 col-md-3">
-          <div class="form-group">
-            <label for="JobTitleInput"></label>
-           <button class="searchBtn btn btn-default">Search</button>
-          </div>    
-      </div>
-    </div>
+      <div class="col-xs-1 col-md-1"></div>
+    </div>  
 
-   <div class="tempResults">Result: {{jsonResult}}</div> 
+
+    <div class="tempResults">Result: {{jsonResult}}</div> 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/app.js"></script>
+    <script>
+       var jsonResult = "{{jsonResult}}";
+       displayResults(jsonResult)
+
+    </script>
+ 
   </body>
+</html>  
 
