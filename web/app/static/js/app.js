@@ -10,7 +10,7 @@ function search() {
  
  	var inputData = {'jobtitle': jobtitle, 'company': company, 'location': location};
 
- 	console.log("inputData: " + inputData)
+ 	console.log("inputData: " + inputData);
 
 
     $.ajax({
@@ -20,32 +20,41 @@ function search() {
         data : JSON.stringify(inputData),
         type: 'POST',
         success: function(response) {
-            console.log("Ajax response:" + response);
+            //console.log("Ajax response:" + response);
+            //console.log("response.resJSON:" + response.resJSON) 
+            //console.log("response typeof: " + typeof response)
+            
+	    //var responseObj = JSON.stringify(eval("(" + response + ")"));
+            var responseObj = JSON.parse(response);
+            //console.log("responseObj:" + responseObj + ", responseObj typeof: " + typeof responseObj);
+	    //console.log("responseObj:" + JSON.stringify(responseObj))	
 
-            var jobsArray = response.resJSON;
-            var jobtitle = "";
+            var jobsArray = responseObj.resJSON;
+            //var jobsArray = [];
+	    var jobtitle = "";
             var company = "";
             var location = "";
             var date = "";
             var url = "";
             var snippet = "";
-            $jobRow = $(".jobsResultsSection .jobRowTemplate");    
 
-            for (var i=0; i<=jobsArray.length; i++) {
+            for (var i=0; i<jobsArray.length; i++) {
 
                 jobtitle = jobsArray[i]._source.jobtitle;
                 company = jobsArray[i]._source.company;
                 location = jobsArray[i]._source.location;
                 snippet = jobsArray[i]._source.snippet;
                 url = jobsArray[i]._source.url;
-                date = jobsArray[i]._source.day.toString() + ' - ' +  jobsArray[i]._source.month.toString() + ' - ' + jobsArray[i]._source.year.toString()   
-                console.log("row: " + i + ", jobtitle:" + jobtitle + ", company:" + company + ", location:" + location + ", date:" + date + ", url:" + url + ", snippet:" + snippet);
-                $jobRow = $(".jobsResultsSection .jobRowTemplate"); 
-                $.jobRow.find(".jobtitleCompanyCol").text(jobtitle + " at " + company); 
-                $.jobRow.find(".snippetCol").text(snippet); 
-                $.jobRow.find(".urlLink").attr("href", url); 
+                //date = jobsArray[i]._source.day.toString() + ' - ' +  jobsArray[i]._source.month.toString() + ' - ' + jobsArray[i]._source.year.toString()   
+                //console.log("row: " + i + ", jobtitle:" + jobtitle + ", company:" + company + ", location:" + location + ", date:" + date + ", url:" + url + ", snippet:" + snippet);
 
-                $(".jobsResultsSection").append($.jobRow.html());
+		$jobRow = $(".jobsResultsSection .jobRowTemplate").clone();
+            	$jobRow.removeClass("jobRowTemplate");
+                $jobRow.find(".jobtitleCompanyCol").text(jobtitle + " at " + company); 
+                $jobRow.find(".snippetCol").text(snippet); 
+                $jobRow.find(".urlLink").attr("href", url); 
+
+                $(".jobsResultsSection").append($jobRow.html());
 
             }
         },
