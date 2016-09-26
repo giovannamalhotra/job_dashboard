@@ -43,7 +43,7 @@
   <body>
     <div class="title">Job Dashboard</div>
 
-    <div class="row">
+    <div class="row searchCriteriaSection">
       <div class="col-xs-1 col-md-1"></div>
       <div class="col-xs-10 col-md-10">
         <div class="row">
@@ -75,6 +75,27 @@
       <div class="col-xs-1 col-md-1"></div>
     </div>  
 
+    <div class="row">
+      <div class="col-xs-1 col-md-1"></div>
+        <div class="col-xs-10 col-md-10 jobsResultsSection">
+          <div class="row jobRowTemplate jobRow">
+            <div class="col-xs-12">
+              <div class="row">
+                <div class="col-xs-10 jobtitleCompanyCol">Data Engineering</div>
+                <div class="col-xs-2">Star</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 snippetCol">Url</div>
+              </div>  
+              <div class="row">
+                <div class="col-xs-10"><a href="" class="urlLink">Apply here</a></div>
+                <div class="col-xs-2 twitterLink" data-company="">2 tweets</div>
+              </div>            
+            </div>
+          </div>
+        </div>
+      </div>          
+    </div>
 
     <div class="tempResults">Result: {{jsonResult}}</div> 
 
