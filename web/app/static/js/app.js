@@ -20,8 +20,6 @@ function search() {
         data : JSON.stringify(inputData),
         type: 'POST',
         success: function(response) {
-            //console.log("Ajax response:" + response);
-            //console.log("response.resJSON:" + response.resJSON) 
             //console.log("response typeof: " + typeof response)
             
 	    //var responseObj = JSON.stringify(eval("(" + response + ")"));
@@ -30,14 +28,14 @@ function search() {
 	    //console.log("responseObj:" + JSON.stringify(responseObj))	
 
             var jobsArray = responseObj.resJSON;
-            //var jobsArray = [];
 	    var jobtitle = "";
             var company = "";
             var location = "";
             var date = "";
             var url = "";
             var snippet = "";
-
+            console.log("jobsArray length:" + jobsArray.length )
+       
             for (var i=0; i<jobsArray.length; i++) {
 
                 jobtitle = jobsArray[i]._source.jobtitle;
@@ -54,7 +52,7 @@ function search() {
                 $jobRow.find(".snippetCol").text(snippet); 
                 $jobRow.find(".urlLink").attr("href", url); 
 
-                $(".jobsResultsSection").append($jobRow.html());
+                $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
 
             }
         },

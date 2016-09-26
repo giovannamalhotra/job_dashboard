@@ -35,12 +35,15 @@ input.form-control {
 }
 
 .jobRow {
-    max-width: 800px;
+/*    max-width: 800px; */
     margin-left: auto;
     margin-right: auto;
     border-top: 1px solid #ccc;
-    padding-top: 2rem;
+    padding: 2rem 0;
 }
+
+.jobRowTemplate { display: none;}
+
 
 @media (min-width: @screen-md-min) {
 
