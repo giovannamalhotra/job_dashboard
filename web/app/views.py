@@ -23,24 +23,28 @@ def search():
     req_json = request.get_json();   
     print req_json
 
-    criteria_list = []
-    if req_json["jobtitle"].strip():
-       criteria = { "match": { "jobtitle": req_json["jobtitle"].strip() }}
-       criteria_list.append(criteria)
+    if not req_json["jobtitle"].strip() and not req_json["company"].strip() and not req_json["location"].strip():
+       res = es.search(index = INDEX_NAME, size = 500, body={"query": {"match_all": {}}})
+    else: 
 
-    if req_json["company"].strip():
-       criteria = { "match": { "company": req_json["company"].strip() }}
-       criteria_list.append(criteria)
+       criteria_list = []
+       if req_json["jobtitle"].strip():
+          criteria = { "match": { "jobtitle": req_json["jobtitle"].strip() }}
+          criteria_list.append(criteria)
 
-    if req_json["location"].strip():
-       criteria = { "match": { "location": req_json["location"].strip() }}
-       criteria_list.append(criteria)
+       if req_json["company"].strip():
+          criteria = { "match": { "company": req_json["company"].strip() }}
+          criteria_list.append(criteria)
+
+       if req_json["location"].strip():
+          criteria = { "match": { "location": req_json["location"].strip() }}
+          criteria_list.append(criteria)
 
 
-    search_json = {'query': { "bool": {  "should": criteria_list } } }
-    print search_json
+       search_json = {'query': { "bool": {  "should": criteria_list } } }
+       print search_json
 
-    res = es.search(index="dashboard", doc_type="jobs", body={'query': { "bool": {  "should": criteria_list } } })
+       res = es.search(index="dashboard", doc_type="jobs", body={'query': { "bool": {  "should": criteria_list } } })
      
     #return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res});
     return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res['hits']['hits']});
