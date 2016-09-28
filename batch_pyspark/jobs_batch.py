@@ -31,7 +31,7 @@ es = Elasticsearch([{'host': ES_NODES}])
 S3_BUCKET = 'giovanna-insight'
 
 # Shema structure
-'''
+
 feedStruct  = [StructField("jobtitle", StringType(), True),
         StructField("company", StringType(), True),
         StructField("url", StringType(), True),
@@ -43,7 +43,7 @@ feedStruct  = [StructField("jobtitle", StringType(), True),
         StructField("date", StringType(), True),
         #StructField("id", StringType(), True),
         StructField("origin", StringType(), True)]
-'''
+
 
 indeedStruct  = [StructField("city", StringType(), True),
         StructField("company", StringType(), True),
@@ -126,7 +126,7 @@ if __name__ == '__main__':
                                                           year=datetime.strptime(row.date, dateFormat).year, \
                                                           date=str(datetime.strptime(row.date, dateFormat).day).zfill(2) + '-' + str(datetime.strptime(row.date, dateFormat).month).zfill(2) + '-' +  str(datetime.strptime(row.date, dateFormat).year), \
                                                           origin='Indeed'))
-   transformedIndeedDF = sqlContext.createDataFrame(indeedRDD, indeedSchema).persist(StorageLevel.DISK_ONLY)
+   transformedIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
 
 
    diceRDD = diceDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobTitle, \
@@ -140,12 +140,12 @@ if __name__ == '__main__':
                                                           date=row.date[8:10] + '-' + row.date[5:7] + '-' + row.date[0:4], \
                                                           origin='Dice'))
 
-   transformedDiceDF = sqlContext.createDataFrame(diceRDD, diceSchema).persist(StorageLevel.DISK_ONLY)
+   transformedDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
 
 
-   print "--------------------------------filteredIndeedDF schema -------------------------------"
+   print "--------------------------------transformedIndeedDF schema -------------------------------"
    transformedIndeedDF.printSchema()
-   print "--------------------------------filteredDiceDF schema -------------------------------"
+   print "--------------------------------transformedDiceDF schema -------------------------------"
    transformedDiceDF.printSchema()
    print "--------------------------------indeed and Dice data -------------------------------"
    print transformedIndeedDF.rdd.take(1)
