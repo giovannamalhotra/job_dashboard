@@ -94,7 +94,7 @@ if __name__ == '__main__':
                                                           day=datetime.strptime(row.date, dateFormat).day, \
                                                           month=datetime.strptime(row.date, dateFormat).month, \
                                                           year=datetime.strptime(row.date, dateFormat).year, \
-                                                          date=str(datetime.strptime(row.date, dateFormat).day).zfill(2) + ' - ' + str(datetime.strptime(row.date, dateFormat).month).zfill(2) + str(datetime.strptime(row.date, dateFormat).year), \
+                                                          date=str(datetime.strptime(row.date, dateFormat).day).zfill(2) + '-' + str(datetime.strptime(row.date, dateFormat).month).zfill(2) + '-' +  str(datetime.strptime(row.date, dateFormat).year), \
                                                           origin='Indeed'))
    transformedIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
 
@@ -107,7 +107,7 @@ if __name__ == '__main__':
                                                           day=row.date[8:10], \
                                                           month=row.date[5:7], \
                                                           year=row.date[0:4], \
-                                                          date=row.date[8:10] + ' - ' + row.date[5:7] + ' - ' + row.date[0:4], \
+                                                          date=row.date[8:10] + '-' + row.date[5:7] + '-' + row.date[0:4], \
                                                           origin='Dice'))
 
    transformedDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
