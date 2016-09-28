@@ -126,8 +126,10 @@ if __name__ == '__main__':
                                                           year=datetime.strptime(row.date, dateFormat).year, \
                                                           date=str(datetime.strptime(row.date, dateFormat).day).zfill(2) + '-' + str(datetime.strptime(row.date, dateFormat).month).zfill(2) + '-' +  str(datetime.strptime(row.date, dateFormat).year), \
                                                           origin='Indeed'))
-   transformedIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
 
+   print indeedRDD.take(1)
+   #transformedIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
+   transformedIndeedDF = sqlContext.createDataFrame(indeedRDD, feedSchema)
 
    diceRDD = diceDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobTitle, \
                                                           company=row.company, \
@@ -140,8 +142,10 @@ if __name__ == '__main__':
                                                           date=row.date[8:10] + '-' + row.date[5:7] + '-' + row.date[0:4], \
                                                           origin='Dice'))
 
-   transformedDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
+   print diceRDD.take(1)
 
+   #transformedDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
+   transformedDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema)
 
    print "--------------------------------transformedIndeedDF schema -------------------------------"
    transformedIndeedDF.printSchema()
