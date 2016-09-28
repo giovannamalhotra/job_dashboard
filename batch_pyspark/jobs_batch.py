@@ -36,9 +36,9 @@ feedStruct  = [StructField("jobtitle", StringType(), True),
         StructField("url", StringType(), True),
         StructField("location", StringType(), True),
         StructField("snippet", StringType(), True),
-        StructField("day", LongType(), True),
-        StructField("month", LongType(), True),
-        StructField("year", LongType(), True),
+        StructField("day", IntegerType(), True),
+        StructField("month", IntegerType(), True),
+        StructField("year", IntegerType(), True),
         StructField("date", StringType(), True),
         #StructField("id", StringType(), True),
         StructField("origin", StringType(), True)]
@@ -70,14 +70,14 @@ if __name__ == '__main__':
    diceFileS3 = "s3a://giovanna-insight/raw_logs/secor_backup/diceFeed/*"
        
    # construct RDD[Sting]
-   #indeedStaticFile = 'json1.json'
-   #diceStaticFile = 'json2.json'
-
    indeedDF = sqlContext.read.json(indeedFileS3)
    diceDF = sqlContext.read.json(diceFileS3)
 
    indeedDF.printSchema()
    diceDF.printSchema()
+   print indeedDF.rdd.take(1)
+   print diceDF.rdd.take(1)
+
 
    # Transform data to extract only the elements that are needed
    feedSchema = StructType(feedStruct)
@@ -107,7 +107,7 @@ if __name__ == '__main__':
                                                           day=row.date[8:10], \
                                                           month=row.date[5:7], \
                                                           year=row.date[0:4], \
-                                                          date=row.date[8:10] + ' - ' + row.date[5:7] + ' - ' + row.date[0:4]
+                                                          date=row.date[8:10] + ' - ' + row.date[5:7] + ' - ' + row.date[0:4], \
                                                           origin='Dice'))
 
    transformedDiceDF = sqlContext.createDataFrame(diceRDD, feedSchema).persist(StorageLevel.DISK_ONLY)
@@ -118,10 +118,11 @@ if __name__ == '__main__':
    print "--------------------------------filteredDiceDF schema -------------------------------"
    transformedDiceDF.printSchema()
    print "--------------------------------indeed and Dice data -------------------------------"
-   transformedIndeedDF.show
-   transformedDiceDF.show
+   print transformedIndeedDF.rdd.take(1)
+   print transformedDiceDF.rdd.take(1)
 
-
+   
+'''
    transformedIndeedDF.registerTempTable("newIndeedTBL")
    transformedDiceDF.registerTempTable("newDiceTBL")
 
@@ -131,22 +132,37 @@ if __name__ == '__main__':
    combinedDF = sqlContext.sql("SELECT * FROM newDiceTBL UNION ALL SELECT * FROM newIndeedTBL")
    combinedDF.registerTempTable("combinedTBL")
 
+
    # Dedup rows
    combinedDedupDF = sqlContext.sql("SELECT jobtitle, company, location, first(url) as url, first(snippet) as snippet, first(day) as day, first(month) as month, first(year) as year, first(date) as date, first(origin) as origin FROM combinedTBL GROUP BY jobtitle, company, location")   
 
    combinedDedupDF.printSchema() 
-   #finalRDD = combinedDedupDF.rdd
-   #finalRDD.take(10)
+   print combinedDedupDF.rdd.take(1)
 
    es_conf = {'es.nodes': ES_NODES, 'es.resource': ES_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
 
 
-   finalRDD = combinedDedupDF.map(lambda row: ('key', row.asDict()))
-   finalRDD.saveAsNewAPIHadoopFile(path='-', \
-                                            outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
-                                            keyClass='org.apache.hadoop.io.NullWritable', \
-                                            valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
-                                            conf=es_conf)
+   #finalRDD = combinedDedupDF.map(lambda row: ('key', row.asDict()))
+   finalRDD = combinedDedupDF.rdd.map(lambda row: ('key', row.asDict()))
+   #finalRDD.foreach(println)
+   print finalRDD.take(1)
+'''
+   #finalRDD = combinedDedupDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobtitle, \
+   #                                                       company=row.company, \
+   #                                                       url=row.url, \
+   #                                                       location=row.location, \
+   #                                                       snippet=row.snippet, \
+   #                                                       day=row.day, \
+   #                                                       month=row.month, \
+   #                                                       year=row.year, \
+   #                                                       date=row.date, \
+   #                                                       origin=row.origin))
+
+   #finalRDD.saveAsNewAPIHadoopFile(path='-', \
+   #                                         outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+   #                                         keyClass='org.apache.hadoop.io.NullWritable', \
+   #                                         valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+   #                                         conf=es_conf)
 
 
    #combinedDedupDF.rdd.saveToEs("dashboard/jobs")
