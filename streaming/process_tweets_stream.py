@@ -11,7 +11,11 @@ from elasticsearch import Elasticsearch, helpers
 import pprint
 import json
 
-companyList = []
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
+company_list = []
 
 # Set Elasticsearch configuration to save tweets
 ES_WRITE_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com'
@@ -32,42 +36,73 @@ es_company = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.
 # -------------------------------------------------------------
 def getCompanies():
 
-   # Get companies list and load it to memory
-   #res = es_company.search(index = ES_COMPANY_INDEX, doc_type=ES_COMPANY_TYPE, body={"query": {"match_all": {}}})
-   #
-   #companyList1 = []
-   #for hit in res['hits']['hits']:
-   #  companyList1.append(hit["_source"]["company"])
-   #print companyList1
+    # Get companies list and load it to memory
+    #res = es_company.search(index = ES_COMPANY_INDEX, doc_type=ES_COMPANY_TYPE, body={"query": {"match_all": {}}})
+    #
+    #company_list_1 = []
+    #for hit in res['hits']['hits']:
+    #  company_list_1.append(hit["_source"]["company"])
+    #print company_list_1
 
 
-   page = es_company.search(
-     index = ES_COMPANY_INDEX,
-     doc_type = ES_COMPANY_TYPE,
-     scroll = '2m',
-     search_type = 'scan',
-     #size = 1000,
-     body = {
-          # Query's body
-          "query": {"match_all": {}} 
-     })
-   sid = page['_scroll_id']
-   scroll_size = page['hits']['total']
+    page = es_company.search(
+        index = ES_COMPANY_INDEX,
+        doc_type = ES_COMPANY_TYPE,
+        scroll = '2m',
+        search_type = 'scan',
+        #size = 1000,
+        body = {
+            # Query's body
+            "query": {"match_all": {}} 
+        })
+    sid = page['_scroll_id']
+    scroll_size = page['hits']['total']
   
-   # Start scrolling
-   while (scroll_size > 0):
-     print "Scrolling..."
-     page = es_company.scroll(scroll_id = sid, scroll = '2m')
-     # Update the scroll ID
-     sid = page['_scroll_id']
-     # Get the number of results that we returned in the last scroll
-     scroll_size = len(page['hits']['hits'])
-     #print "scroll size: " + str(scroll_size)
+    # Start scrolling
+    while (scroll_size > 0):
+        print "Scrolling..."
+        page = es_company.scroll(scroll_id = sid, scroll = '2m')
+        # Update the scroll ID
+        sid = page['_scroll_id']
+        # Get the number of results that we returned in the last scroll
+        scroll_size = len(page['hits']['hits'])
+        #print "scroll size: " + str(scroll_size)
      
-     for hit in page['hits']['hits']:
-       companyList.append(hit["_source"]["company"])
+        for hit in page['hits']['hits']:
+            company_list.append(hit["_source"]["company"])
 
-   print companyList
+    print company_list
+
+
+
+# ------------------------------------------------------------------
+# --- Generate final list of tweets containing at least one company 
+# ------------------------------------------------------------------
+def getFinalTweetsList(raw_tweets_list):
+    final_list = []
+    for tweet in raw_tweets_list:
+        print tweet
+        tweet_lower = tweet.lower() 
+        for company in company_list:
+            company_lower = company.lower()
+            if company_lower in tweet_lower:
+                tweet_obj = {
+                   "company": company_lower,
+                   "tweet": tweet,
+                   "source": "stream",
+                   "link": " "	
+                } 
+                final_list.append(tweet_obj)             
+
+    return final_list 
+
+
+# ------------------------------------------------------------------
+# --- Determine if the tweet contains any of the companies
+# ------------------------------------------------------------------
+#def isTweetAboutAnyCompany(tweet):
+     
+    
 
 
 # -------------------------------------------------------------
@@ -75,24 +110,27 @@ def getCompanies():
 # -------------------------------------------------------------
 def processStreamRDD(rdd):
    # process each RDD from each micro batch      
-   print 'Inside processStreamRDD method is empty for now...'
-   #print rdd.take(5)
   
-   # !!!!!!! Read tweets from each RDD and extract only "text". Create a new RDD with only tweet text
-   #tweetsRDD = rdd.map(lambda row: pyspark.sql.Row(tweet=row.text))
-   tweetsList = rdd.collect()                                                
+   tweets_list = rdd.collect()  # tweets_list is an array of tweets.                                               
+
+   print '-------------------------- tweets_list ---------------------------------'
+   print tweets_list
+
+   final_tweets_list = getFinalTweetsList(tweets_list)
    
-   print '-------------------------- tweetsList ---------------------------------'
-   #tweetsList.pprint() 
-   print tweetsList
+   final_rdd = sc.parallelize(final_tweets_list).map(lambda row: row)
+
+   print '-------------------------- final_rdd  ---------------------------------'
+   print final_rdd.take(5)
+   
 
    es_conf = {'es.nodes': ES_WRITE_NODES, 'es.resource': ES_WRITE_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
 
-   #finalRDD.saveAsNewAPIHadoopFile(path='-', \
-   #                                         outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
-   #                                         keyClass='org.apache.hadoop.io.NullWritable', \
-   #                                         valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
-   #                                         conf=es_conf)
+   final_rdd.saveAsNewAPIHadoopFile(path='-', \
+                                            outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+                                            keyClass='org.apache.hadoop.io.NullWritable', \
+                                            valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+                                            conf=es_conf)
 
 
 # -------------------------------------------------------------
