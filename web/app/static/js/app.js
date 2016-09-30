@@ -27,7 +27,7 @@ function search() {
             //console.log("responseObj:" + responseObj + ", responseObj typeof: " + typeof responseObj);
             //console.log("responseObj:" + JSON.stringify(responseObj))	
 
-            var jobsArray = responseObj.resJSON;
+            var jobsArray = responseObj.res_jobs_json;
             var jobtitle = "";
             var company = "";
             var location = "";
