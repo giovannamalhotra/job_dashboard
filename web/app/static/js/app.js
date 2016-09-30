@@ -73,3 +73,10 @@ function search() {
     });
 
 }
+
+function displayLanding() {
+    $(".jobsResultsSection").hide();
+    $("body").addClass("landing_background");
+    $(".landing_box").slideDown();
+}
+

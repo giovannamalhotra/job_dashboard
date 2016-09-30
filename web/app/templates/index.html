@@ -42,7 +42,7 @@
  </head>
   <body class="landing_background">
 
-    <div class = "landing_box">
+    <div class="landing_box">
         <div class="title">Job Dashboard</div>
 
         <div class="row searchCriteriaSection">
@@ -82,26 +82,27 @@
         </div>  
     </div>    
 
-    <div class="row">
-      <div class="col-xs-1 col-md-1"></div>
-        <div class="col-xs-10 col-md-10 jobsResultsSection">
-          <div class="row jobRowTemplate jobRow">
-            <div class="col-xs-12">
-              <div class="row">
-                <div class="col-xs-10 jobtitleCompanyCol">Data Engineering</div>
-                <div class="col-xs-2">Star</div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12 snippetCol">Url</div>
-              </div>  
-              <div class="row">
-                <div class="col-xs-10"><a href="" class="urlLink">Apply here</a></div>
-                <div class="col-xs-2 twitterLink" data-company="">2 tweets</div>
-              </div>            
+    <div class="jobsResultsSection">
+      <div class="topIconWrapper">
+        <a href="javascript:;" onclick="displayLanding()">Top</a>
+      </div>
+      <div class="jobsResultsSection">
+        <div class="row jobRowTemplate jobRow">
+          <div class="col-xs-12">
+            <div class="row">
+              <div class="col-xs-10 jobtitleCompanyCol">Data Engineering</div>
+              <div class="col-xs-2">Star</div>
             </div>
+            <div class="row">
+              <div class="col-xs-12 snippetCol">Url</div>
+            </div>  
+            <div class="row">
+              <div class="col-xs-10"><a href="" class="urlLink">Apply here</a></div>
+              <div class="col-xs-2 twitterLink" data-company="">2 tweets</div>
+            </div>            
           </div>
         </div>
-      </div>          
+      </div>
     </div>
 
     <div class="tempResults">Result: {{res_jobs_json}}</div> 
