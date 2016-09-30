@@ -14,8 +14,11 @@ def index():
   
   res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, size = 500, body={"query": {"match_all": {}}})
   json_res =  json.dumps(res, indent=2)
-  
-  return render_template("index.html", jsonResult = json_res)
+
+  res_tweets = es.search(index = INDEX_NAME, doc_type = "companytweet", size = 500, body={"query": {"match_all": {}}})
+  json_tweets = json.dumps(res_tweets, indent=2)  
+
+  return render_template("index.html", res_jobs_json = json_res, res_tweets_json = json_tweets)
 
 
 @app.route('/search', methods=['POST'])
