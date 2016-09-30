@@ -5,7 +5,7 @@
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - — - - - - - - - - -
 
-#curl -XPOST 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/' -d '{"mapping": {"company ": {"properties": {"company": { "type ": "string" }}}}}'
+#curl -XPOST 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/_mapping/company' -d '{"company ": {"properties": {"company": { "type ": "string" }}}}'
 
 #curl http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/_stats/indexes\?pretty\=1
 
@@ -36,5 +36,6 @@ curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c22" -d '{"company" : "Accenture"}'
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c23" -d '{"company" : "Yahoo"}'
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c24" -d '{"company" : "Cisco"}'
+#curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c25" -d '{"company" : "Stripe"}'
 
-curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c24'
+curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c25'

@@ -5,14 +5,14 @@
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - — - - - - - - - - -
 
-curl -XPOST 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/' -d '{"mapping": {"companytweet": {"properties": {"company": { "type":"string" }, "tweet": { "type":"string"}, "link": { "type":"string" }, "source": { "type":"string" }}}}}'
+curl -XPOST 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/_mapping/companytweet' -d '{ "companytweet": {"properties": {"company": { "type":"string" }, "tweet": { "type":"string"}, "link": { "type":"string" }, "source": { "type":"string" }}}}'
 
 #curl http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/_stats/indexes\?pretty\=1
 
 curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/_mapping/companytweet'
 
 
-curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/companytweet/t1" -d '{"company" : "LinkedIn", "tweet" : "Learning doesn\'t have to happen in the classroom.", "link": "https://t.co/07jcNIPNX1", "source": "Twitter" }'
+#curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/companytweet/t1" -d '{"company" : "LinkedIn", "tweet" : "Learning doesn\'t have to happen in the classroom.", "link": "https://t.co/07jcNIPNX1", "source": "Twitter" }'
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/companytweet/t2" -d '{"company" : "Facebook"}'
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/companytweet/t3" -d '{"company" : "Fitbit"}'
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/companytweet/t4" -d '{"company" : "Yelp"}'
