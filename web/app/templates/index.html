@@ -40,40 +40,47 @@
     <link href="../static/css/app.css" rel="stylesheet">
 
  </head>
-  <body>
-    <div class="title">Job Dashboard</div>
+  <body class="landing_background">
 
-    <div class="row searchCriteriaSection">
-      <div class="col-xs-1 col-md-1"></div>
-      <div class="col-xs-10 col-md-10">
-        <div class="row">
-          <div class="col-xs-12 col-md-3">
-              <div class="form-group">
-                <label class="hidden-xs hidden-sm" for="JobTitleInput">Job Title</label>
-                <input type="text" id="jobtitleInput" class="form-control" placeholder="Job Title">
+    <div class = "landing_box">
+        <div class="title">Job Dashboard</div>
+
+        <div class="row searchCriteriaSection">
+          <div class="col-xs-1 col-md-1"></div>
+          <div class="col-xs-10 col-md-10">
+            <div class="row">
+              <!-- <div class="col-xs-12 col-md-3"> -->
+              <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="hidden-xs hidden-sm hide" for="JobTitleInput">Job Title</label>
+                    <input type="text" id="jobtitleInput" class="form-control" placeholder="Job Title">
+                  </div>
               </div>
-          </div>
-          <div class="col-xs-12 col-md-3">
-              <div class="form-group">
-                <label class="hidden-xs hidden-sm" for="JobTitleInput">Company</label>
-                <input type="text" id="companyInput" class="form-control" placeholder="Company">
+              <div class="col-xs-12">
+              <!-- <div class="col-xs-12 col-md-3"> -->
+                  <div class="form-group">
+                    <label class="hidden-xs hidden-sm hide" for="JobTitleInput">Company</label>
+                    <input type="text" id="companyInput" class="form-control" placeholder="Company">
+                  </div>
               </div>
+              <!-- <div class="col-xs-12 col-md-3"> -->
+              <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="hidden-xs hidden-sm hide" for="JobTitleInput">Location</label>
+                    <input type="text" id="locationInput" class="form-control" placeholder="Location">
+                  </div>    
+              </div>
+              <!-- <div class="col-xs-12 col-md-1 centerContent"> -->
+              <div class="col-xs-12 centerContent">
+                  <div class="form-group ">
+                   <button class="searchBtn btn btn-primary btn-default" onclick="search()">Search</button>
+                  </div>    
+              </div>
+            </div>
           </div>
-          <div class="col-xs-12 col-md-4">
-              <div class="form-group">
-                <label class="hidden-xs hidden-sm" for="JobTitleInput">Location</label>
-                <input type="text" id="locationInput" class="form-control" placeholder="Location">
-              </div>    
-          </div>
-          <div class="col-xs-12 col-md-1 centerContent">
-              <div class="form-group ">
-               <button class="searchBtn btn btn-primary btn-default" onclick="search()">Search</button>
-              </div>    
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-1 col-md-1"></div>
-    </div>  
+          <div class="col-xs-1 col-md-1"></div>
+        </div>  
+    </div>    
 
     <div class="row">
       <div class="col-xs-1 col-md-1"></div>
