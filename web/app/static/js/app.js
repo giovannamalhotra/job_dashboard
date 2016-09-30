@@ -42,6 +42,7 @@ function search() {
 
                 $(".landing_box").slideUp();
                 $("body").removeClass("landing_background");
+                $(".jobsResultsSection").show();
 
                 for (var i=0; i<jobsArray.length; i++) {
 

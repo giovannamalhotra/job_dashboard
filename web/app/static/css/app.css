@@ -92,10 +92,19 @@ input.form-control {
     transform: translate(-50%, -50%);
 }  
 
-.topIcon {
-  text-align: right;
-  margin-right: 2rem;
-}  
+.topIconWrapper {
+    text-align: right;
+    margin-right: 5rem;
+    padding: 2rem;
+    max-width: 1000px;
+  }  
+
+.topIconText {
+    padding-left: 2rem;
+    font-size: 1.7rem;
+}
+
+
 
 @media (max-width: 641px) {
   

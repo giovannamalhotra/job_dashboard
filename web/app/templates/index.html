@@ -28,7 +28,8 @@
     <title>Job Dashboard</title>
 
     <!-- Bootstrap -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="../static/css/font-awesome/css/font-awesome.min.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -84,14 +85,14 @@
 
     <div class="jobsResultsSection">
       <div class="topIconWrapper">
-        <a href="javascript:;" onclick="displayLanding()">Top</a>
+        <a href="javascript:;" onclick="displayLanding()"><i class="fa fa-arrow-up arrowIcon" aria-hidden="true"></i><span class="topIconText">Top<span></a>
       </div>
       <div class="jobsResultsSection">
         <div class="row jobRowTemplate jobRow">
           <div class="col-xs-12">
             <div class="row">
               <div class="col-xs-10 jobtitleCompanyCol">Data Engineering</div>
-              <div class="col-xs-2">Star</div>
+              <div class="col-xs-2"><i class="fa fa-star-o starIcon" aria-hidden="true"></i></div>
             </div>
             <div class="row">
               <div class="col-xs-12 snippetCol">Url</div>
