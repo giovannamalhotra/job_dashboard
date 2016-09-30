@@ -51,9 +51,12 @@ def search():
 
     res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, size = 500, body = body)
 
+    tweets_query = '{"query": {"match_all": {}}}'
+    res_tweets = es.search(index = INDEX_NAME, doc_type = "companytweet", size = 500, body = tweets_query)
+
  
     #return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res});
-    return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res['hits']['hits']});
+    return json.dumps({'status':'OK','req_json':req_json, 'res_jobs_json':res['hits']['hits'], 'res_tweets_json': res_tweets['hits']['hits'] });
 
 
 
