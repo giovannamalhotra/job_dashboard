@@ -34,7 +34,7 @@ function search() {
             var date = "";
             var url = "";
             var snippet = "";
-            console.log("jobsArray length:" + jobsArray.length )
+            console.log("jobsArray length:" + jobsArray.length)
            
             $(".jobsResultsSection .jobRow").not(".jobRowTemplate").remove();
 
@@ -51,7 +51,7 @@ function search() {
         	    $jobRow = $(".jobsResultsSection .jobRowTemplate").clone();
             	$jobRow.removeClass("jobRowTemplate");
                 $jobRow.find(".jobtitleCompanyCol").text(jobtitle + " at " + company); 
-                $jobRow.find(".snippetCol").text(snippet); 
+                $jobRow.find(".snippetCol").html(snippet); 
                 $jobRow.find(".urlLink").attr("href", url); 
 
                 $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
@@ -62,6 +62,5 @@ function search() {
             console.log(error);
         }
     });
-
 
 }
