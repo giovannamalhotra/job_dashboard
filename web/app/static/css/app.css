@@ -5,6 +5,7 @@ body {
 
 .tempResults {
   margin-top: 4rem;
+  display: none;
 }
 
 .title {
