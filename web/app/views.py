@@ -49,38 +49,9 @@ def search():
         #res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, body={"query": { "bool": {  "should": criteria_list } } })
         body = {"query": { "bool": {  "should": criteria_list } } }
 
-
     res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, size = 500, body = body)
+
  
-'''
-    page = es.search(
-        index = INDEX_NAME,
-        doc_type = TYPE_NAME,
-        scroll = '2m',
-        search_type = 'scan',
-        #size = 1000,
-        body = {
-            # Query's body
-            "query": { { "bool": {  "should": criteria_list } } } 
-        })
-    sid = page['_scroll_id']
-    scroll_size = page['hits']['total']
-
-    # Start scrolling
-    while (scroll_size > 0):
-        print "Scrolling..."
-        page = es_company.scroll(scroll_id = sid, scroll = '2m')
-        # Update the scroll ID
-        sid = page['_scroll_id']
-        # Get the number of results that we returned in the last scroll
-        scroll_size = len(page['hits']['hits'])
-        #print "scroll size: " + str(scroll_size)
-     
-        for hit in page['hits']['hits']:
-            company_list.append(hit["_source"]["company"])
-'''
-
-
     #return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res});
     return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res['hits']['hits']});
 
