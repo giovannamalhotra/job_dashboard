@@ -4,7 +4,7 @@ from elasticsearch import Elasticsearch
 import json
 
 INDEX_NAME = 'dashboard'
-TYPE_NAME = 'jobs'
+TYPE_NAME = 'jobposting'
 #es = Elasticsearch(hosts = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com')
 es = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200','ec2-54-68-213-131.us-west-2.compute.amazonaws.com:9200','ec2-52-43-52-129.us-west-2.compute.amazonaws.com:9200'])
 
@@ -12,7 +12,7 @@ es = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200
 @app.route('/index')
 def index():
   
-  res = es.search(index = INDEX_NAME, size = 500, body={"query": {"match_all": {}}})
+  res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, size = 500, body={"query": {"match_all": {}}})
   json_res =  json.dumps(res, indent=2)
   
   return render_template("index.html", jsonResult = json_res)
@@ -24,7 +24,7 @@ def search():
     print req_json
 
     if not req_json["jobtitle"].strip() and not req_json["company"].strip() and not req_json["location"].strip():
-       res = es.search(index = INDEX_NAME, size = 500, body={"query": {"match_all": {}}})
+       res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME,  size = 500, body={"query": {"match_all": {}}})
     else: 
 
        criteria_list = []
@@ -44,7 +44,7 @@ def search():
        search_json = {'query': { "bool": {  "should": criteria_list } } }
        print search_json
 
-       res = es.search(index="dashboard", doc_type="jobs", body={'query': { "bool": {  "should": criteria_list } } })
+       res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, body={'query': { "bool": {  "should": criteria_list } } })
      
     #return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res});
     return json.dumps({'status':'OK','req_json':req_json, 'resJSON':res['hits']['hits']});
