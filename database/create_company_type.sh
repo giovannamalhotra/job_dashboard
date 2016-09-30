@@ -5,7 +5,7 @@
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - — - - - - - - - - -
 
-#curl -XPOST 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/' -d '{"mapping": {"company ": {"properties": {"companyname ": { "type ": "string" }}}}}'
+#curl -XPOST 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/' -d '{"mapping": {"company ": {"properties": {"company": { "type ": "string" }}}}}'
 
 #curl http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/_stats/indexes\?pretty\=1
 
