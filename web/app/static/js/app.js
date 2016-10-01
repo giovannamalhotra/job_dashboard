@@ -177,6 +177,8 @@ function displayTweets(thisObj) {
     var company = thisObj.find(".tweetsNum").attr("data-company");
     var tweetsArray = getArrayOfTweets(company);
 
+    console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
+
     for (var i=0; i<tweetsArray; i++) {
         tweetsHTML = tweetsHTML + 
                      '<div>' + tweetsArray[i] + '</div>';
