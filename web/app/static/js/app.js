@@ -6,7 +6,7 @@ var companyTweetsMap = {};
 
 function getNumTweets(companyName) {
 
-    vat totalNum = 0;
+    var totalNum = 0;
     companyName = companyName.toLowerCase();
     if ( companyTweetsMap[companyName] ) {
         totalNum = companyTweetsMap[companyName].length;
