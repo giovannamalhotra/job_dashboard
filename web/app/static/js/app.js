@@ -24,7 +24,7 @@ function search() {
  
  	var inputData = {'jobtitle': jobtitle, 'company': company, 'location': location};
 
- 	console.log("inputData: " + JSON.stringify(inputData);
+ 	console.log("inputData: " + JSON.stringify(inputData));
 
     $.ajax({
         url: '/search',
