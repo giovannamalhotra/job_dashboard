@@ -106,6 +106,7 @@ input.form-control {
 
 .twitterIcon {
   color: #55acee;  /* Twitter color */
+  padding-right: 2rem;
 }
 
 .jobtitle {
@@ -138,6 +139,21 @@ input.form-control {
   font-size: 2.2rem;
 }
 
+.rightAlign {
+  text-align: right;
+}
+
+.tweetsNum {
+  color: #55acee;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.tweetsWrapper {
+  position: relative;
+}
 
 
 @media (max-width: 641px) {
