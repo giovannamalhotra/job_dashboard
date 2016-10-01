@@ -1,6 +1,20 @@
 /*
 Javascript for job dashboard app
 */
+var companyTweetsMap = {};
+
+
+function getNumTweets(companyName) {
+
+    vat totalNum = 0;
+    companyName = companyName.toLowerCase();
+    if ( companyTweetsMap[companyName] ) {
+        totalNum = companyTweetsMap[companyName].length;
+    }    
+    return totalNum;
+}
+
+
 
 function search() {
 
@@ -11,7 +25,6 @@ function search() {
  	var inputData = {'jobtitle': jobtitle, 'company': company, 'location': location};
 
  	console.log("inputData: " + inputData);
-
 
     $.ajax({
         url: '/search',
@@ -27,6 +40,27 @@ function search() {
             //console.log("responseObj:" + responseObj + ", responseObj typeof: " + typeof responseObj);
             //console.log("responseObj:" + JSON.stringify(responseObj))	
 
+            /* Load tweets for each company */    
+            tweetsArray = responseObj.res_tweets;
+
+            for (var i=0; i<tweetsArray.length; i++) {
+
+                if (tweetsArray[i]._source) {
+
+                    var company = tweetsArray[i]._source.company.toLowerCase();    
+                    var tweet = tweetsArray[i]._source.tweet;
+                    
+                    if ( !companyTweetsMap[company] ) {
+
+                        var tweetsArray = [];
+                        tweetsArray.push();    
+                        companyTweetsMap[company] = tweetsArray;    
+                    } else {
+                       companyTweetsMap[company].push(tweet);  
+                    }
+                }    
+            }    
+            
             var jobsArray = responseObj.res_jobs_json;
             var jobtitle = "";
             var company = "";
@@ -40,9 +74,27 @@ function search() {
 
             if (jobsArray.length > 0) {
 
+                /* Sort jobs by Tweets */    
+
+                jobsArray.sort(function(a, b) {
+
+                    var companyA_tweetsNum = 0;
+                    var companyB_tweetsNum = 0;
+
+                    if ( companyTweetsMap[a._source.company] )  {
+                        companyA_tweetsNum = companyTweetsMap[a_source.company].length;
+                    }
+
+                    if ( companyTweetsMap[b._source.company] )  {
+                        companyB_tweetsNum = companyTweetsMap[b_source.company].length;
+                    }
+                    return companyA_tweetsNum - companyB_tweetsNum;
+                });    
+
+
                 $("body").removeClass("landing_background");
                 $(".landing_box").slideUp("normal", function() {
-                    $(".jobsResultsSection").show();
+                    $(".jobsResultsSection").show(normal);
                 });
 
                 for (var i=0; i<jobsArray.length; i++) {
@@ -64,6 +116,10 @@ function search() {
                     $jobRow.find(".snippet").html(snippet); 
 
                     $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
+
+                    // Populate tweets
+                    $jobRow.find(".TweetsNum").text(getNumTweets(company));
+                    $jobRow.find(".TweetsNum").attr("data-company", company); 
 
                 }
             }    

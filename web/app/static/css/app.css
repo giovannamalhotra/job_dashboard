@@ -93,8 +93,8 @@ input.form-control {
 }  
 
 .topIconWrapper {
-    text-align: right;
-    margin-right: 5rem;
+    text-align: left;
+    margin-left: 5rem;
     padding: 2rem;
     max-width: 1000px;
   }  

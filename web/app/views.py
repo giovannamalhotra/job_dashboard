@@ -46,7 +46,7 @@ def search():
             criteria_list.append(criteria)
 
 
-        search_json = {'query': { "bool": {  "should": criteria_list } } }
+        search_json = {'query': { "bool": {  "must": criteria_list } } }
         print search_json
 
         #res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, body={"query": { "bool": {  "should": criteria_list } } })
