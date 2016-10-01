@@ -34,14 +34,14 @@ function search() {
             var date = "";
             var url = "";
             var snippet = "";
-            console.log("jobsArray length:" + jobsArray.length)
+            console.log("jobsArray length:" + jobsArray.length);
            
             $(".jobsResultsSection .jobRow").not(".jobRowTemplate").remove();
 
             if (jobsArray.length > 0) {
 
                 $("body").removeClass("landing_background");
-                $(".landing_box").slideUp("normal", , function() {
+                $(".landing_box").slideUp("normal", function() {
                     $(".jobsResultsSection").show();
                 });
 
