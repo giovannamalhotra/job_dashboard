@@ -179,7 +179,7 @@ function displayTweets(thisObj) {
 
     console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
 
-    for (var i=0; i<tweetsArray; i++) {
+    for (var i=0; i<tweetsArray.length; i++) {
         tweetsHTML = tweetsHTML + 
                      '<div>' + tweetsArray[i] + '</div>';
     }
