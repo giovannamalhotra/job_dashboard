@@ -173,22 +173,32 @@ function changeStarStyle(thisObj) {
 
 function displayTweets(thisObj) {
 
-    var tweetsHTML = '<div class="tweetsRow">';
     var company = thisObj.find(".tweetsNum").attr("data-company");
     var tweetsArray = getArrayOfTweets(company);
-
     console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
+
+    var tweetsHTML = '<div class="tweetsRow row">' + 
+                        '<div class="col-xs-11>' + 
+                            '<div class="tweetsSectionTitle">Tweets</div>';
+
 
     for (var i=0; i<tweetsArray.length; i++) {
         tweetsHTML = tweetsHTML + 
-                     '<div>' + tweetsArray[i] + '</div>';
+                     '<div class="tweetElem">' + tweetsArray[i] + '</div>';
     }
 
-    tweetsHTML = tweetsHTML + "</div>";
+    tweetsHTML = tweetsHTML +  
+                        '</div>' + 
+                        '<div class="col-xs-1>' + 
+                            '<a href="javascript:void(0)" onclick="closeTweetsSection($(this))">' + 
+                                '<i class="fa fa-times closeTweetsBtn" aria-hidden="true"></i>' + 
+                            '</a>' +
+                        '</div>' + 
+                    '</div>';    
 
 
     $jobRowParent = thisObj.closest(".jobRow");
     $jobRowParent.after(tweetsHTML);
-    $jobRowParent.next("tweetsRow").slideDown("normal");    
+    $jobRowParent.next(".tweetsRow").slideDown("normal");    
 
 }

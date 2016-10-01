@@ -157,7 +157,24 @@ input.form-control {
 
 .tweetsRow {
   display: none;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  border-top: 1px solid #ccc;
+  padding: 2rem 4rem;
 }
+
+.tweetsSectionTitle {
+  font-size: 1.8rem;
+  color: #55acee;
+}
+
+.tweetElem {
+  padding-left: 7rem;
+  font-size: 1.6rem;
+}
+
+
 
 @media (max-width: 641px) {
   
