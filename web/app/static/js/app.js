@@ -117,13 +117,12 @@ function search() {
                     $jobRow.find(".urlLink").attr("href", url); 
                     $jobRow.find(".snippet").html(snippet); 
 
-                    $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
-
-                    console.log("company:" + company + ", num Tweets:" + getNumTweets(company));
-
                     // Populate tweets
-                    $jobRow.find(".TweetsNum").text(getNumTweets(company));
-                    $jobRow.find(".TweetsNum").attr("data-company", company); 
+                    console.log("company:" + company + ", num Tweets:" + getNumTweets(company));
+                    $jobRow.find(".tweetsNum").text(getNumTweets(company) + " tweets");
+                    $jobRow.find(".tweetsNum").attr("data-company", company); 
+
+                    $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
 
                 }
             }    
