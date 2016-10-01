@@ -63,7 +63,7 @@ function search() {
                 }    
             }    
 
-            console.log("companyTweetsMap:" + cJSON.stringify(ompanyTweetsMap));
+            console.log("companyTweetsMap:" + JSON.stringify(companyTweetsMap));
             
             var jobsArray = responseObj.res_jobs_json;
             var jobtitle = "";
