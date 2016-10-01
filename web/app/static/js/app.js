@@ -54,11 +54,9 @@ function search() {
                     
                     if ( !companyTweetsMap[company] ) {
 
-                        var tweetsArray = [];
-                        tweetsArray.push();    
-                        companyTweetsMap[company] = tweetsArray;    
+                        companyTweetsMap[company] = [tweet];    
                     } else {
-                       companyTweetsMap[company].push(tweet);  
+                        companyTweetsMap[company].push(tweet);  
                     }
                 }    
             }    
