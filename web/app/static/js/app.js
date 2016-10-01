@@ -171,6 +171,13 @@ function changeStarStyle(thisObj) {
 }
 
 
+function closeTweetsSection(thisObj) {
+
+    thisObj.closest(".tweetsRow").slideUp("normal");
+}
+
+
+
 function displayTweets(thisObj) {
 
     var company = thisObj.find(".tweetsNum").attr("data-company");
@@ -178,7 +185,7 @@ function displayTweets(thisObj) {
     console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
 
     var tweetsHTML = '<div class="tweetsRow row">' + 
-                        '<div class="col-xs-11">' + 
+                        '<div class="col-xs-10">' + 
                             '<div class="tweetsSectionTitle">Tweets</div>';
 
 
@@ -189,7 +196,7 @@ function displayTweets(thisObj) {
 
     tweetsHTML = tweetsHTML +  
                         '</div>' + 
-                        '<div class="col-xs-1">' + 
+                        '<div class="col-xs-2">' + 
                             '<a href="javascript:void(0)" onclick="closeTweetsSection($(this))">' + 
                                 '<i class="fa fa-times closeTweetsBtn" aria-hidden="true"></i>' + 
                             '</a>' +
