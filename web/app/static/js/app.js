@@ -54,6 +54,7 @@ function search() {
 
             /* Load tweets for each company */    
             tweetsArray = responseObj.res_tweets_json;
+            companyTweetsMap = {};
 
             console.log("tweetsArray:" + JSON.stringify(tweetsArray));
 
@@ -180,32 +181,40 @@ function closeTweetsSection(thisObj) {
 
 function displayTweets(thisObj) {
 
-    var company = thisObj.find(".tweetsNum").attr("data-company");
-    var tweetsArray = getArrayOfTweets(company);
-    console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
+    $jobRowParent = thisObj.closest(".jobRow");
 
-    var tweetsHTML = '<div class="tweetsRow row">' + 
-                        '<div class="col-xs-10">' + 
-                            '<div class="tweetsSectionTitle">Tweets</div>';
+    if ( !$jobRowParent.next(".tweetsRow").length ) {
+
+        var company = thisObj.find(".tweetsNum").attr("data-company");
+        var tweetsArray = getArrayOfTweets(company);
+        console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
+
+        var tweetsHTML = '<div class="tweetsRow row">' + 
+                            '<div class="col-xs-10">' + 
+                                '<div class="tweetsSectionTitle">Tweets</div>';
 
 
-    for (var i=0; i<tweetsArray.length; i++) {
-        tweetsHTML = tweetsHTML + 
-                     '<div class="tweetElem">' + tweetsArray[i] + '</div>';
+        for (var i=0; i<tweetsArray.length; i++) {
+            tweetsHTML = tweetsHTML + 
+                         '<div class="tweetElem">' + tweetsArray[i] + '</div>';
+        }
+
+        tweetsHTML = tweetsHTML +  
+                            '</div>' + 
+                            '<div class="col-xs-2">' + 
+                                '<a href="javascript:void(0)" onclick="closeTweetsSection($(this))">' + 
+                                    '<i class="fa fa-times closeTweetsBtn" aria-hidden="true"></i>' + 
+                                '</a>' +
+                            '</div>' + 
+                        '</div>';    
+
+
+        $jobRowParent.after(tweetsHTML);
     }
 
-    tweetsHTML = tweetsHTML +  
-                        '</div>' + 
-                        '<div class="col-xs-2">' + 
-                            '<a href="javascript:void(0)" onclick="closeTweetsSection($(this))">' + 
-                                '<i class="fa fa-times closeTweetsBtn" aria-hidden="true"></i>' + 
-                            '</a>' +
-                        '</div>' + 
-                    '</div>';    
+    $jobRowParent.next(".tweetsRow").slideDown("normal");         
 
 
-    $jobRowParent = thisObj.closest(".jobRow");
-    $jobRowParent.after(tweetsHTML);
-    $jobRowParent.next(".tweetsRow").slideDown("normal");    
+   
 
 }
