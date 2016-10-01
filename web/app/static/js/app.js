@@ -24,7 +24,7 @@ function search() {
  
  	var inputData = {'jobtitle': jobtitle, 'company': company, 'location': location};
 
- 	console.log("inputData: " + inputData);
+ 	console.log("inputData: " + JSON.stringify(inputData);
 
     $.ajax({
         url: '/search',
@@ -43,7 +43,7 @@ function search() {
             /* Load tweets for each company */    
             tweetsArray = responseObj.res_tweets_json;
 
-            console.log("tweetsArray:" + tweetsArray);
+            console.log("tweetsArray:" + JSON.stringify(tweetsArray));
 
             for (var i=0; i<tweetsArray.length; i++) {
 
@@ -63,7 +63,7 @@ function search() {
                 }    
             }    
 
-            console.log("companyTweetsMap:" + companyTweetsMap);
+            console.log("companyTweetsMap:" + cJSON.stringify(ompanyTweetsMap));
             
             var jobsArray = responseObj.res_jobs_json;
             var jobtitle = "";
