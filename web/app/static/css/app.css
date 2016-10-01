@@ -114,19 +114,30 @@ input.form-control {
 }
 
 .company {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 .location {
-  color: #888888;
+  color: #808080;
   font-style: italic;
-  font-size: 1.5rem;
-  padding-top: 0.2rem;
+  font-size: 1.7rem;
+  padding-top: 0.4rem;
 }
 
 .snippet {
   color: #A8A8A8;
+  padding-top: 0.4rem;
 }
+
+.urlLink { 
+  padding-top: 4rem;
+}
+
+.starIcon {
+  color: #e6c300;
+  font-size: 2.2rem;
+}
+
 
 
 @media (max-width: 641px) {

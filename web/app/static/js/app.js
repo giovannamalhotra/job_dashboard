@@ -81,3 +81,20 @@ function displayLanding() {
     $(".landing_box").slideDown();
 }
 
+
+
+function changeStarStyle(thisObj) {
+
+    $star = thisObj.find("i");
+    if ( $star.hasClass("fa-star-o") ) {
+
+        $star.removeClass("fa-star-o");
+        $star.addClass("fa-star");
+
+    } else {
+
+        $star.removeClass("fa-star");
+        $star.addClass("fa-star-o");
+    }
+
+}
