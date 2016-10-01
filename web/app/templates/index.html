@@ -87,25 +87,25 @@
       <div class="topIconWrapper">
         <a href="javascript:void(0)" onclick="displayLanding()"><i class="fa fa-arrow-left fa-lg arrowIcon" aria-hidden="true"></i><span class="topIconText">Back to search<span></a>
       </div>
-      <div>
-        <div class="row jobRowTemplate jobRow">
-          <div class="col-xs-9">
-            <div class="row">
-              <div class="jobtitle">Data Engineering</div>
-              <div class="company">Apple</div>
-              <div class="location">Cupertino</div>
-              <div class="snippet">Url</div>
-              <div><a href="" class="urlLink">Apply here</a></div>
-            </div>
+
+      <div class="row jobRowTemplate jobRow">
+        <div class="col-xs-8">
+          <div class="row">
+            <div class="jobtitle">Data Engineering</div>
+            <div class="company">Apple</div>
+            <div class="location">Cupertino</div>
+            <div class="snippet">Url</div>
+            <div><a href="" class="urlLink">Apply here</a></div>
           </div>
-          <div class="col-xs-2 rightAlign tweetsWrapper">
-              <span class="tweetsNum" data-company=""></span><i class="fa fa-twitter fa-2x twitterIcon" aria-hidden="true"></i>
-          </div>  
-          <div class="col-xs-1 rightAlign">
-              <a href="javascript:void(0)" onclick="changeStarStyle($(this))"><i class="fa fa-star-o fa-lg starIcon" aria-hidden="true"></i></a>
-          </div>            
         </div>
+        <div class="col-xs-3 rightAlign tweetsWrapper">
+            <a href="javascript:void(0)" onclick="displayTweets($(this))"><span class="tweetsNum" data-company=""></span><i class="fa fa-twitter fa-2x twitterIcon" aria-hidden="true"></i></a>
+        </div>  
+        <div class="col-xs-1 rightAlign">
+            <a href="javascript:void(0)" onclick="changeStarStyle($(this))"><i class="fa fa-star-o fa-lg starIcon" aria-hidden="true"></i></a>
+        </div>            
       </div>
+
     </div>
 
     <div class="tempResults">Result: {{res_jobs_json}}</div> 

@@ -15,6 +15,18 @@ function getNumTweets(companyName) {
 }
 
 
+function getArrayOfTweets(companyName) {
+
+    companyName = companyName.toLowerCase();
+    var tweetsArray = [];
+
+    if ( companyTweetsMap[companyName] ) {
+        tweetsArray = companyTweetsMap[companyName];
+    }    
+    return tweetsArray;
+}
+
+
 
 function search() {
 
@@ -134,6 +146,7 @@ function search() {
 
 }
 
+
 function displayLanding() {
     $(".jobsResultsSection").hide();
     $("body").addClass("landing_background");
@@ -155,5 +168,25 @@ function changeStarStyle(thisObj) {
         $star.removeClass("fa-star");
         $star.addClass("fa-star-o");
     }
+}
+
+
+function displayTweets(thisObj) {
+
+    var tweetsHTML = '<div class="tweetsRow">';
+    var company = thisObj.find(".tweetsNum").attr("data-company");
+    var tweetsArray = getArrayOfTweets(company);
+
+    for (var i=0; i<tweetsArray; i++) {
+        tweetsHTML = tweetsHTML + 
+                     '<div>' + tweetsArray[i] + '</div>';
+    }
+
+    tweetsHTML = tweetsHTML + "</div>";
+
+
+    $jobRowParent = thisObj.closest(".jobRow");
+    $jobRowParent.after(tweetsHTML);
+    $jobRowParent.next("tweetsRow").slideDown("normal");    
 
 }

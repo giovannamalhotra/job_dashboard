@@ -155,6 +155,9 @@ input.form-control {
   position: relative;
 }
 
+.tweetsRow {
+  display: none;
+}
 
 @media (max-width: 641px) {
   
