@@ -40,9 +40,10 @@ function search() {
 
             if (jobsArray.length > 0) {
 
-                $(".landing_box").slideUp();
                 $("body").removeClass("landing_background");
-                $(".jobsResultsSection").show();
+                $(".landing_box").slideUp("normal", , function() {
+                    $(".jobsResultsSection").show();
+                });
 
                 for (var i=0; i<jobsArray.length; i++) {
 
@@ -56,17 +57,16 @@ function search() {
 
                     $jobRow = $(".jobsResultsSection .jobRowTemplate").clone();
                     $jobRow.removeClass("jobRowTemplate");
-                    $jobRow.find(".jobtitleCompanyCol").text(jobtitle + " at " + company); 
-                    $jobRow.find(".snippetCol").html(snippet); 
+                    $jobRow.find(".jobtitle").text(jobtitle); 
+                    $jobRow.find(".company").text(company); 
+                    $jobRow.find(".location").text(location); 
                     $jobRow.find(".urlLink").attr("href", url); 
+                    $jobRow.find(".snippet").html(snippet); 
 
                     $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
 
                 }
-
-
             }    
-
         },
         error: function(error) {
             console.log(error);

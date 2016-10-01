@@ -48,7 +48,7 @@ input.form-control {
 }
 
 .jobRow {
-    max-width: 800px; 
+    max-width: 900px; 
     margin-left: auto;
     margin-right: auto;
     border-top: 1px solid #ccc;
@@ -100,11 +100,13 @@ input.form-control {
   }  
 
 .topIconText {
-    padding-left: 2rem;
-    font-size: 1.7rem;
+    padding-left: 0.5rem;
+    font-size: 2rem;
 }
 
-
+.twitterIcon {
+  color: #55acee;  /* Twitter color */
+}
 
 @media (max-width: 641px) {
   
