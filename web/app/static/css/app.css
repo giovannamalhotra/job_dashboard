@@ -108,6 +108,27 @@ input.form-control {
   color: #55acee;  /* Twitter color */
 }
 
+.jobtitle {
+  color: #4dc247;
+  font-size: 2.2rem;
+}
+
+.company {
+  font-size: 1.8rem;
+}
+
+.location {
+  color: #888888;
+  font-style: italic;
+  font-size: 1.5rem;
+  padding-top: 0.2rem;
+}
+
+.snippet {
+  color: #A8A8A8;
+}
+
+
 @media (max-width: 641px) {
   
   .landing_box {
