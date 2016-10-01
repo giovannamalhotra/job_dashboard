@@ -43,6 +43,8 @@ function search() {
             /* Load tweets for each company */    
             tweetsArray = responseObj.res_tweets_json;
 
+            console.log("tweetsArray:" + tweetsArray);
+
             for (var i=0; i<tweetsArray.length; i++) {
 
                 if (tweetsArray[i]._source) {
@@ -60,6 +62,8 @@ function search() {
                     }
                 }    
             }    
+
+            console.log("companyTweetsMap:" + companyTweetsMap);
             
             var jobsArray = responseObj.res_jobs_json;
             var jobtitle = "";
@@ -94,7 +98,7 @@ function search() {
 
                 $("body").removeClass("landing_background");
                 $(".landing_box").slideUp("normal", function() {
-                    $(".jobsResultsSection").show(normal);
+                    $(".jobsResultsSection").show("normal");
                 });
 
                 for (var i=0; i<jobsArray.length; i++) {
@@ -116,6 +120,8 @@ function search() {
                     $jobRow.find(".snippet").html(snippet); 
 
                     $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
+
+                    console.log("company:" + company + ", num Tweets:" + getNumTweets(company));
 
                     // Populate tweets
                     $jobRow.find(".TweetsNum").text(getNumTweets(company));
