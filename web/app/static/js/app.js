@@ -41,7 +41,7 @@ function search() {
             //console.log("responseObj:" + JSON.stringify(responseObj))	
 
             /* Load tweets for each company */    
-            tweetsArray = responseObj.res_tweets;
+            tweetsArray = responseObj.res_tweets_json;
 
             for (var i=0; i<tweetsArray.length; i++) {
 
