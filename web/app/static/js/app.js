@@ -191,7 +191,7 @@ function displayTweets(thisObj) {
         console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
 
         var tweetsHTML = '<div class="tweetsRow row">' + 
-                            '<div class="col-xs-10">' + 
+                            '<div class="col-xs-10 tweetsSectionCol">' + 
                                 '<div class="tweetsSectionTitle">Tweets</div>' +
                                  '<ul>';   
 
