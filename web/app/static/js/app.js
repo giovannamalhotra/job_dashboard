@@ -183,40 +183,40 @@ function displayTweets(thisObj) {
 
     $jobRowParent = thisObj.closest(".jobRow");
 
+    if ( !$jobRowParent.next(".tweetsRow").length ) {
+
+        var company = thisObj.find(".tweetsNum").attr("data-company");
+        var tweetsArray = getArrayOfTweets(company);
+        console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
+
+        var tweetsHTML = '<div class="tweetsRow row">' + 
+                            '<div class="col-xs-10">' + 
+                                '<div class="tweetsSectionTitle">Tweets</div>';
+
+
+        for (var i=0; i<tweetsArray.length; i++) {
+            tweetsHTML = tweetsHTML + 
+                         '<div class="tweetElem">' + tweetsArray[i] + '</div>';
+        }
+
+        tweetsHTML = tweetsHTML +  
+                            '</div>' + 
+                            '<div class="col-xs-2">' + 
+                                '<a href="javascript:void(0)" onclick="closeTweetsSection($(this))">' + 
+                                    '<i class="fa fa-times closeTweetsBtn" aria-hidden="true"></i>' + 
+                                '</a>' +
+                            '</div>' + 
+                        '</div>';    
+
+
+        $jobRowParent.after(tweetsHTML);
+    }
+
+
     if ( $jobRowParent.next(".tweetsRow").css("display") !== "none" ) { // Tweets section is visible
         $jobRowParent.next(".tweetsRow").slideUp("normal");
 
-    } else {
-
-        if ( !$jobRowParent.next(".tweetsRow").length ) {
-
-            var company = thisObj.find(".tweetsNum").attr("data-company");
-            var tweetsArray = getArrayOfTweets(company);
-            console.log("Inside displayTweets... company:" + company + ", tweetsArray:" + tweetsArray);
-
-            var tweetsHTML = '<div class="tweetsRow row">' + 
-                                '<div class="col-xs-10">' + 
-                                    '<div class="tweetsSectionTitle">Tweets</div>';
-
-
-            for (var i=0; i<tweetsArray.length; i++) {
-                tweetsHTML = tweetsHTML + 
-                             '<div class="tweetElem">' + tweetsArray[i] + '</div>';
-            }
-
-            tweetsHTML = tweetsHTML +  
-                                '</div>' + 
-                                '<div class="col-xs-2">' + 
-                                    '<a href="javascript:void(0)" onclick="closeTweetsSection($(this))">' + 
-                                        '<i class="fa fa-times closeTweetsBtn" aria-hidden="true"></i>' + 
-                                    '</a>' +
-                                '</div>' + 
-                            '</div>';    
-
-
-            $jobRowParent.after(tweetsHTML);
-        }
-
+    } else {    
         $jobRowParent.next(".tweetsRow").slideDown("normal");     
 
     }
