@@ -170,8 +170,8 @@ input.form-control {
 }
 
 .tweetElem {
-  padding-left: 7rem;
   font-size: 1.6rem;
+  padding-top: 1rem;
 }
 
 .closeTweetsBtn {
@@ -182,6 +182,12 @@ input.form-control {
 .tweetsRow ul {
   list-style-type: circle;
   list-style-position: outside;
+  padding-left: 7rem;
+  color: #808080;
+}
+
+.tweetsSectionCol {
+  padding-left: 0;
 }
 
 
