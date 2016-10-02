@@ -107,9 +107,9 @@ function search() {
                 });    
 
 
+                $("body").removeClass("landing_background");
                 $(".landing_box").fadeOut("normal", function() {
-                    $("body").removeClass("landing_background");
-                    $(".jobsResultsSection").show("normal");
+                    $(".jobsResultsSection").show("slow");
                 });
 
                 for (var i=0; i<jobsArray.length; i++) {
