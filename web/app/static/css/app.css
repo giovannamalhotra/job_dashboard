@@ -206,6 +206,14 @@ input.form-control {
   .tweetElem {
     font-size: 1.4rem;
   }  
+
+  .tweetsWrapper {
+    padding: 0;
+  }
+
+  .twitterIcon { {
+    padding-right: 0;
+  }
 }
 
 @media (min-width: 642px) {
