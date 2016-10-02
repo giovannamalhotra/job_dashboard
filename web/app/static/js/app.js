@@ -86,6 +86,7 @@ function search() {
             console.log("jobsArray length:" + jobsArray.length);
            
             $(".jobsResultsSection .jobRow").not(".jobRowTemplate").remove();
+            $(".jobsResultsSection .tweetsRow").remove();
 
             if (jobsArray.length > 0) {
 
