@@ -214,6 +214,23 @@ input.form-control {
   .twitterIcon {
     padding-right: 0;
   }
+
+  .topIconWrapper {
+    margin-left: 0;
+  }
+
+  .jobRow {
+    padding: 2rem 2rem;
+  }
+
+  .jobtitle {
+    font-size: 2rem;
+  }
+
+  .company {
+    font-size: 1.8rem;
+  }
+
 }
 
 @media (min-width: 642px) {
