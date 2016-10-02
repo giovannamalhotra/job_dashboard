@@ -192,15 +192,17 @@ function displayTweets(thisObj) {
 
         var tweetsHTML = '<div class="tweetsRow row">' + 
                             '<div class="col-xs-10">' + 
-                                '<div class="tweetsSectionTitle">Tweets</div>';
+                                '<div class="tweetsSectionTitle">Tweets</div>' +
+                                 '<ul>';   
+
 
 
         for (var i=0; i<tweetsArray.length; i++) {
             tweetsHTML = tweetsHTML + 
-                         '<div class="tweetElem">' + tweetsArray[i] + '</div>';
+                         '<li class="tweetElem">' + tweetsArray[i] + '</li>';
         }
 
-        tweetsHTML = tweetsHTML +  
+        tweetsHTML = tweetsHTML +  '</ul>' + 
                             '</div>' + 
                             '<div class="col-xs-2">' + 
                                 '<a href="javascript:void(0)" onclick="closeTweetsSection($(this))">' + 

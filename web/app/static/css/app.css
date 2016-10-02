@@ -179,6 +179,10 @@ input.form-control {
   font-size: 2rem;
 }
 
+.tweetsRow ul {
+  list-style-type: circle;
+  list-style-position: outside;
+}
 
 
 @media (max-width: 641px) {
