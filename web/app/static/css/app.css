@@ -242,5 +242,7 @@ input.form-control {
   .landing_background {
      background-image: url("../../static/img/sf_landscape.jpg"); 
   }
-
+  input.form-control {
+    font-size: 18px;
+  }
 }    
