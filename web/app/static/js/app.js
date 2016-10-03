@@ -46,6 +46,10 @@ function search() {
         type: 'POST',
         success: function(response) {
             //console.log("response typeof: " + typeof response)
+
+            // Hide any error message that might be displayed
+            $(".errorMsg").text(" ").hide();
+
                 
             //var responseObj = JSON.stringify(eval("(" + response + ")"));
             var responseObj = JSON.parse(response);
@@ -139,6 +143,8 @@ function search() {
                     $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
 
                 }
+            } else {
+                $(".errorMsg").text("No results were found").show();
             }    
         },
         error: function(error) {

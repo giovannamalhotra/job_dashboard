@@ -192,6 +192,7 @@ input.form-control {
   padding: 0;
 }
 
+.errorMsg { display:none;} }
 
 @media (max-width: 641px) {
   
