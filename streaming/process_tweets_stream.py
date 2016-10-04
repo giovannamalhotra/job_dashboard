@@ -95,7 +95,8 @@ def getFinalTweetsList(raw_tweets_list):
                 final_list.append(tweet_obj)             
 
 
-    print '------- FInal tweets list: ' + final_list
+    print '------- Final tweets list: ----------'  
+    print final_list
     return final_list 
 
 
@@ -108,8 +109,11 @@ def processStreamRDD(rdd):
    tweets_list = rdd.collect()  # tweets_list is an array of tweets.                                               
 
    final_tweets_list = getFinalTweetsList(tweets_list)
-   
-   final_rdd = sc.parallelize(final_tweets_list).map(lambda row: row)
+   final_rdd = sc.parallelize(final_tweets_list).map(lambda row: pyspark.sql.Row(company=row['company'], \
+                                                                                 tweet=row['tweet'], \
+                                                                                 source=row['source'], \
+                                                                                 link=row['link']))
+   final_rdd = final_rdd.map(lambda row: ('key', row.asDict())) 
 
    print '-------------------------- final_rdd  ---------------------------------'
    print final_rdd.take(5)
@@ -117,11 +121,11 @@ def processStreamRDD(rdd):
 
    es_conf = {'es.nodes': ES_WRITE_NODES, 'es.resource': ES_WRITE_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
 
-   final_rdd.saveAsNewAPIHadoopFile(path='-', \
-                                            outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
-                                            keyClass='org.apache.hadoop.io.NullWritable', \
-                                            valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
-                                            conf=es_conf)
+   #final_rdd.saveAsNewAPIHadoopFile(path='-', \
+   #                                         outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+   #                                         keyClass='org.apache.hadoop.io.NullWritable', \
+   #                                         valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+   #                                         conf=es_conf)
 
 
 # -------------------------------------------------------------
@@ -149,9 +153,9 @@ if __name__ == "__main__":
      
 
     kafka_stream = KafkaUtils.createDirectStream(ssc, ['tweetsFeed'], {"metadata.broker.list": brokers})
-    print '--------------------- Printing kafkastream content --------------------------------'
-    kafka_stream.pprint()
-    print '--------------------- End of kafkastream content -----------------------------------'
+    #print '--------------------- Printing kafkastream content --------------------------------'
+    #kafka_stream.pprint()
+    #print '--------------------- End of kafkastream content -----------------------------------'
 
     #lines = kafka_stream.map(lambda x: x[1])  #Twitter message is in second object of the kafka stream response 
     #streamRDDCollection = lines.flatMap(lambda line: line.split(" ")) 
@@ -160,14 +164,14 @@ if __name__ == "__main__":
     #tweets_stream = tweets_stream.filter(lambda x: 'text' in x)
     #tweets_stream = tweets_stream.map(lambda x: x['text'])
     tweets_stream = tweets_stream.map(lambda x: x['text'].encode("utf-8","replace"))
-    tweets_stream = tweets_stream.map(lambda x: re.sub(r'[^a-zA-Z0-9]', "", x))
+    tweets_stream = tweets_stream.map(lambda x: re.sub(r'[^a-zA-Z0-9]', " ", x))
 
     #streamRDDCollection = tweets_stream.flatMap(lambda x: x.split(" "))
     streamRDDCollection = tweets_stream
 
-    print '--------------------- Printing streamRDDCollection ------------------------------- '
-    streamRDDCollection.pprint()
-    print '--------------------- End of  streamRDDCollection -------------------------------- '
+    #print '--------------------- Printing streamRDDCollection ------------------------------- '
+    #streamRDDCollection.pprint()
+    #print '--------------------- End of  streamRDDCollection -------------------------------- '
 
     streamRDDCollection.foreachRDD(lambda rdd: processStreamRDD(rdd))
 
