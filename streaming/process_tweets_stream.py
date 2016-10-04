@@ -10,6 +10,7 @@ from uuid import uuid1
 from elasticsearch import Elasticsearch, helpers
 import pprint
 import json
+import re
 
 import sys
 reload(sys)
@@ -43,7 +44,6 @@ def getCompanies():
     #for hit in res['hits']['hits']:
     #  company_list_1.append(hit["_source"]["company"])
     #print company_list_1
-
 
     page = es_company.search(
         index = ES_COMPANY_INDEX,
@@ -94,15 +94,9 @@ def getFinalTweetsList(raw_tweets_list):
                 } 
                 final_list.append(tweet_obj)             
 
+
+    print '------- FInal tweets list: ' + final_list
     return final_list 
-
-
-# ------------------------------------------------------------------
-# --- Determine if the tweet contains any of the companies
-# ------------------------------------------------------------------
-#def isTweetAboutAnyCompany(tweet):
-     
-    
 
 
 # -------------------------------------------------------------
@@ -112,9 +106,6 @@ def processStreamRDD(rdd):
    # process each RDD from each micro batch      
   
    tweets_list = rdd.collect()  # tweets_list is an array of tweets.                                               
-
-   print '-------------------------- tweets_list ---------------------------------'
-   print tweets_list
 
    final_tweets_list = getFinalTweetsList(tweets_list)
    
@@ -165,10 +156,12 @@ if __name__ == "__main__":
     #lines = kafka_stream.map(lambda x: x[1])  #Twitter message is in second object of the kafka stream response 
     #streamRDDCollection = lines.flatMap(lambda line: line.split(" ")) 
 
-    tweets_stream  = kafka_stream.map(lambda x: json.loads(x[1])) #Twitter message are in second object of the kafka stream response
-    #tweets_stream  = tweets_stream.filter(lambda x: 'text' in x)
-    #tweets_stream  = tweets_stream.map(lambda x: x['text'])
-    tweets_stream  = tweets_stream.map(lambda x: x['text'].encode("utf-8","replace"))
+    tweets_stream = kafka_stream.map(lambda x: json.loads(x[1])) #Twitter message are in second object of the kafka stream response
+    #tweets_stream = tweets_stream.filter(lambda x: 'text' in x)
+    #tweets_stream = tweets_stream.map(lambda x: x['text'])
+    tweets_stream = tweets_stream.map(lambda x: x['text'].encode("utf-8","replace"))
+    tweets_stream = tweets_stream.map(lambda x: re.sub(r'[^a-zA-Z0-9]', "", x))
+
     #streamRDDCollection = tweets_stream.flatMap(lambda x: x.split(" "))
     streamRDDCollection = tweets_stream
 
