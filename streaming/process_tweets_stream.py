@@ -81,13 +81,13 @@ def getCompanies():
 def getFinalTweetsList(raw_tweets_list):
     final_list = []
     for tweet in raw_tweets_list:
-        print tweet
+        #print tweet
         tweet_lower = tweet.lower() 
         for company in company_list:
             company_lower = company.lower()
             if company_lower in tweet_lower:
                 tweet_obj = {
-                   "company": company_lower,
+                   "company": str(company_lower),
                    "tweet": tweet,
                    "source": "stream",
                    "link": " "	
@@ -121,11 +121,11 @@ def processStreamRDD(rdd):
 
    es_conf = {'es.nodes': ES_WRITE_NODES, 'es.resource': ES_WRITE_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
 
-   #final_rdd.saveAsNewAPIHadoopFile(path='-', \
-   #                                         outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
-   #                                         keyClass='org.apache.hadoop.io.NullWritable', \
-   #                                         valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
-   #                                         conf=es_conf)
+   final_rdd.saveAsNewAPIHadoopFile(path='-', \
+                                            outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+                                            keyClass='org.apache.hadoop.io.NullWritable', \
+                                            valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+                                            conf=es_conf)
 
 
 # -------------------------------------------------------------

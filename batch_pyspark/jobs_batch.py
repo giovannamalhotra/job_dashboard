@@ -190,9 +190,9 @@ if __name__ == '__main__':
    es_conf = {'es.nodes': ES_NODES, 'es.resource': ES_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
 
 
-   #finalRDD = combinedDedupeDF.rdd.map(lambda row: ('key', row.asDict()))
-   combinedDedupeRDD = combinedDedupeDF.rdd.filter(lambda row: notFoundInJobsDB(row))
-   finalRDD = combinedDedupeRDD.map(lambda row: ('key', row.asDict()))
+   finalRDD = combinedDedupeDF.rdd.map(lambda row: ('key', row.asDict()))
+   #combinedDedupeRDD = combinedDedupeDF.rdd.filter(lambda row: notFoundInJobsDB(row))
+   #finalRDD = combinedDedupeRDD.map(lambda row: ('key', row.asDict()))
 
    print finalRDD.take(10)
 
