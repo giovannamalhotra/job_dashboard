@@ -71,8 +71,25 @@ diceStruct  = [StructField("company", StringType(), True),
         StructField("location", StringType(), True)]
 '''
 
+
 #result = es.search(index="dashboard", body={'query': {'match': {'jobtitle': 'data_engineering'}}})
 #print json.dumps(result, indent=2)
+
+
+def notFoundInJobsDB(row):
+
+    criteria_list = []
+    criteria_list.append({ "match": { "jobtitle": row.jobtitle }})
+    criteria_list.append({ "match": { "company": row.company }})
+    criteria_list.append({ "match": { "location": row.location }})
+
+    body = {"query": { "bool": {  "must": criteria_list } } }
+    res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, size = 500, body = body)
+    if res.length:
+        return false
+    else:
+        return true    
+
 
 def create_es_index():
    es_settings = {'number_of_shards':3, 'number_of_replicas': 2, 'refresh_interval': '1s', 'index.translog.flush_threshold_size': '1gb'}
@@ -173,8 +190,10 @@ if __name__ == '__main__':
    es_conf = {'es.nodes': ES_NODES, 'es.resource': ES_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
 
 
-   #finalRDD = combinedDedupeDF.map(lambda row: ('key', row.asDict()))
-   finalRDD = combinedDedupeDF.rdd.map(lambda row: ('key', row.asDict()))
+   #finalRDD = combinedDedupeDF.rdd.map(lambda row: ('key', row.asDict()))
+   combinedDedupeRDD = combinedDedupeDF.rdd.filter(lambda row: notFoundInJobsDB(row))
+   finalRDD = combinedDedupeRDD.map(lambda row: ('key', row.asDict()))
+
    print finalRDD.take(10)
 
    #finalRDD = combinedDedupDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobtitle, \
@@ -188,12 +207,26 @@ if __name__ == '__main__':
    #                                                       date=row.date, \
    #                                                       origin=row.origin))
 
-   finalRDD.saveAsNewAPIHadoopFile(path='-', \
-                                            outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
-                                            keyClass='org.apache.hadoop.io.NullWritable', \
-                                            valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
-                                            conf=es_conf)
+   #finalRDD.saveAsNewAPIHadoopFile(path='-', \
+   #                                         outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+   #                                         keyClass='org.apache.hadoop.io.NullWritable', \
+   #                                         valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+   #                                         conf=es_conf)
+ 
+
+   # Store distinct companies
+   combinedDedupeDF.registerTempTable("dedupedTBL")
+   companiesDF = sqlContext.sql("SELECT distinct company FROM dedupedTBL")   
+   companiesRDD = companiesDF.rdd
+   #filteredCompaniesRDD = companiesRDD.filter(lambda x: notFoundInDB(x))
+   #filteredCompaniesRDD = filteredCompaniesRDD.rdd.map(lambda row: ('key', row.asDict()))
+
+   #es_company_conf = {'es.nodes': ES_NODES, 'es.resource': 'dashboard/company', 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
+
+   #filteredCompaniesRDD.saveAsNewAPIHadoopFile(path='-', \
+   #                                         outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+   #                                         keyClass='org.apache.hadoop.io.NullWritable', \
+   #                                         valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+   #                                         conf=es_company_conf)
 
 
-   #combinedDedupDF.rdd.saveToEs("dashboard/jobs")
-   #finalRDD = combinedDedupDF.rdd
