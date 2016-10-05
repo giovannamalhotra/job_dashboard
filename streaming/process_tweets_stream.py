@@ -21,8 +21,8 @@ company_list = []
 # Set Elasticsearch configuration to save tweets
 ES_WRITE_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com'
 ES_WRITE_INDEX = 'dashboard'
-ES_WRITE_TYPE = 'tweets'
-ES_WRITE_RESOURCE = 'dashboard/jobs'
+ES_WRITE_TYPE = 'companytweet'
+ES_WRITE_RESOURCE = 'dashboard/companytweet'
 es_tweets = Elasticsearch([{'host': ES_WRITE_NODES}])
 
 # Set Elasticsearch configuration to get list of companies
