@@ -32,7 +32,7 @@ def sendMessages(jobsListJSON):
 
 
 #Arrays for combinations
-textArray = ['data+engineering', 'python', 'java', 'javascript', 'ruby', 'react', 'oracle'  ]
+textArray = ['data+engineer', 'python', 'java', 'javascript', 'ruby', 'react', 'oracle', 'product manager', 'sql', 'c++', '.net',  'angular', 'cassandra', 'spark', 'sap', 'data scientist']
 
 for text in textArray:
 
