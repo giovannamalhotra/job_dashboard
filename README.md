@@ -12,7 +12,11 @@ It uses the following technologies:
 - ElasticSearch
 - Flask, javascript and bootstrap
 
-[Demo](http://ec2-50-112-150-148.us-west-2.compute.amazonaws.com/index)
+
+Website:
+=========
+
+The project is currently hosted at [Demo](http://ec2-50-112-150-148.us-west-2.compute.amazonaws.com/index)
 <br/>
 <br/>
 ![ ](https://github.com/giovannamalhotra/job_dashboard/blob/master/images/landing_page.png)
