@@ -37,12 +37,13 @@ Below is the pipeline implemented for this project.
 The Project in a nutshell:
 ==========================
 <br/>
-1. Batch data is pulled from Dice and Indeed by calling their public APis and ingested to Kafka to different topics: "diceFeed" and "indeedFeed".
-2. Tweets are pulled from Twitter in real time and ingested to Kafka to "tweetsFeed" topic.
-3. Raw data from Dice and Indeed are saved from Kafka to Amazon S3 by using Secor.
-4. Spark batch Program processes, merges and deduplicates data from Indeed and Dice and saves only new job postings to Elasticsearch.
-5. Spark Streaming reads and filters tweets from kafka. Only tweets about any of the companies identified from the job postings are saved to Elasticsearch.
-6. The Web UI built in Flask pulls job postings and tweets from Elasticsearch and displays them on the dashboard. 
+
+- Batch data is pulled from Dice and Indeed by calling their public APis and ingested to Kafka to different topics: "diceFeed" and "indeedFeed".
+- Tweets are pulled from Twitter in real time and ingested to Kafka to "tweetsFeed" topic.
+- Raw data from Dice and Indeed are saved from Kafka to Amazon S3 by using Secor.
+- Spark batch Program processes, merges and deduplicates data from Indeed and Dice and saves only new job postings to Elasticsearch.
+- Spark Streaming reads and filters tweets from kafka. Only tweets about any of the companies identified from the job postings are saved to Elasticsearch.
+- The Web UI built in Flask pulls job postings and tweets from Elasticsearch and displays them on the dashboard. 
 
 <br/>
 <br/>
