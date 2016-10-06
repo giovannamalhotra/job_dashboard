@@ -12,7 +12,8 @@ It uses the following technologies:
 - ElasticSearch
 - Flask, javascript and bootstrap
 
-
+<br/>
+<br/>
 Website:
 =========
 
@@ -21,9 +22,9 @@ The project is currently hosted at [Demo](http://ec2-50-112-150-148.us-west-2.co
 <br/>
 ![ ](https://github.com/giovannamalhotra/job_dashboard/blob/master/images/landing_page.png)
 ![ ](https://github.com/giovannamalhotra/job_dashboard/blob/master/images/search_results.png)
-<br/>
-<br/>
 
+<br/>
+<br/>
 Pipeline:
 =========
 
@@ -33,10 +34,10 @@ Below is the pipeline implemented for this project.
 ![ ](https://github.com/giovannamalhotra/job_dashboard/blob/master/images/pipeline.png)
 
 <br/>
-
+<br/>
 The Project in a nutshell:
 ==========================
-<br/>
+
 - Batch data is pulled from Dice and Indeed by calling their public APis and ingested to Kafka to different topics: "diceFeed" and "indeedFeed".
 - Tweets are pulled from Twitter in real time and ingested to Kafka to "tweetsFeed" topic.
 - Raw data from Dice and Indeed are saved from Kafka to Amazon S3 by using Secor.
