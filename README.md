@@ -15,8 +15,8 @@ It uses the following technologies:
 [Demo](http://ec2-50-112-150-148.us-west-2.compute.amazonaws.com/index)
 <br/>
 <br/>
-![](https://github.com/giovannamalhotra/job_dashboard/images/landing_page.png?raw=true)
-![](https://github.com/giovannamalhotra/job_dashboard/images/search_results.png?raw=true)
+[](https://github.com/giovannamalhotra/job_dashboard/images/landing_page.png?raw=true)
+[](https://github.com/giovannamalhotra/job_dashboard/images/search_results.png?raw=true)
 <br/>
 <br/>
 
@@ -25,7 +25,7 @@ Pipeline:
 
 Below is the pipeline implemented for this project. 
 
-![](https://github.com/giovannamalhotra/job_dashboard/images/pipeline.png?raw=true)
+[](https://github.com/giovannamalhotra/job_dashboard/images/pipeline.png?raw=true)
 
 <br/>
 <br/>
