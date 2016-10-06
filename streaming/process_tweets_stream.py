@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
     # Set Spark Streaming 
     sc = SparkContext(appName="streamingFromKafka")
-    ssc = StreamingContext(sc, 10)   # every 2 seconds
+    ssc = StreamingContext(sc, 2)   # every 2 seconds
 
     #kafka_machines = envir_vars.storage_cluster_ips
     #zkQuorum = ','.join([m + ':2181' for m in kafka_machines])
