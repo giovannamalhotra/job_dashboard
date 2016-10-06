@@ -37,7 +37,6 @@ Below is the pipeline implemented for this project.
 The Project in a nutshell:
 ==========================
 <br/>
-
 - Batch data is pulled from Dice and Indeed by calling their public APis and ingested to Kafka to different topics: "diceFeed" and "indeedFeed".
 - Tweets are pulled from Twitter in real time and ingested to Kafka to "tweetsFeed" topic.
 - Raw data from Dice and Indeed are saved from Kafka to Amazon S3 by using Secor.
