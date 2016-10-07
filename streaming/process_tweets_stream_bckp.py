@@ -31,13 +31,6 @@ ES_COMPANY_TYPE = 'company'
 es_company = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200','ec2-54-68-213-131.us-west-2.compute.amazonaws.com:9200','ec2-52-43-52-129.us-west-2.compute.amazonaws.com:9200'])
 
 
-#SPARK_MASTER = 'ec2-52-89-46-245.us-west-2.compute.amazonaws.com'
-#sc = SparkContext('spark://' + SPARK_MASTER + ':7077', 'stream')
-sc = SparkContext(appName="streamingFromKafka")
-
-sqlContext = SQLContext(sc)
-
-
 
 # -------------------------------------------------------------
 # --- Get company list from Database
@@ -107,28 +100,12 @@ def getFinalTweetsList(raw_tweets_list):
     return final_list 
 
 
-# ----------------------------------------------------------------------
-# --- If tweet contains company name return that company name, otherwise return ''
-# ----------------------------------------------------------------------
-def companyNameInTweet(tweet):
-    
-    tweet_lower = tweet.lower() 
-    for company in company_list:
-        company_lower = company.lower()
-        if company_lower in tweet_lower:
-            return company_lower   
-    
-    return ''
-
-
-
 # -------------------------------------------------------------
 # --- Process RDD in each stream micro batch
 # -------------------------------------------------------------
 def processStreamRDD(rdd):
    # process each RDD from each micro batch      
   
-   '''
    tweets_list = rdd.collect()  # tweets_list is an array of tweets.                                               
 
    final_tweets_list = getFinalTweetsList(tweets_list)
@@ -136,30 +113,19 @@ def processStreamRDD(rdd):
                                                                                  tweet=row['tweet'], \
                                                                                  source=row['source'], \
                                                                                  link=row['link']))
-   '''
-   if rdd.count() > 0:   
+   final_rdd = final_rdd.map(lambda row: ('key', row.asDict())) 
 
-       DF = sqlContext.createDataFrame(rdd)
-       DF.registerTempTable("tweetsTBL")
-
-       filteredDF = sqlContext.sql("SELECT * FROM tweetsTBL WHERE company <> '' AND company <> ' '")
-
-       if filteredDF.count > 0:
-       
-           final_rdd = filteredDF.rdd  
-           final_rdd = final_rdd.map(lambda row: ('key', row.asDict())) 
-
-           print '-------------------------- final_rdd  ---------------------------------'
-           print final_rdd.take(5)
+   print '-------------------------- final_rdd  ---------------------------------'
+   print final_rdd.take(5)
    
 
-           es_conf = {'es.nodes': ES_WRITE_NODES, 'es.resource': ES_WRITE_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
+   es_conf = {'es.nodes': ES_WRITE_NODES, 'es.resource': ES_WRITE_RESOURCE, 'es.port' : '9200',  'es.batch.write.retry.count': '-1', 'es.batch.size.bytes': '0.05mb'}
 
-           final_rdd.saveAsNewAPIHadoopFile(path='-', \
-                                                    outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
-                                                    keyClass='org.apache.hadoop.io.NullWritable', \
-                                                    valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
-                                                    conf=es_conf)
+   final_rdd.saveAsNewAPIHadoopFile(path='-', \
+                                            outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
+                                            keyClass='org.apache.hadoop.io.NullWritable', \
+                                            valueClass='org.elasticsearch.hadoop.mr.LinkedMapWritable', \
+                                            conf=es_conf)
 
 
 # -------------------------------------------------------------
@@ -171,7 +137,7 @@ if __name__ == "__main__":
     getCompanies()
 
     # Set Spark Streaming 
-    #sc = SparkContext(appName="streamingFromKafka")
+    sc = SparkContext(appName="streamingFromKafka")
     ssc = StreamingContext(sc, 2)   # every 2 seconds
 
     #kafka_machines = envir_vars.storage_cluster_ips
@@ -199,12 +165,6 @@ if __name__ == "__main__":
     #tweets_stream = tweets_stream.map(lambda x: x['text'])
     tweets_stream = tweets_stream.map(lambda x: x['text'].encode("utf-8","replace"))
     tweets_stream = tweets_stream.map(lambda x: re.sub(r'[^a-zA-Z0-9]', " ", x))
-
-
-    tweets_stream = tweets_stream.map(lambda x: pyspark.sql.Row(company=companyNameInTweet(x), \
-                                                                                 tweet=x, \
-                                                                                 source='stream', \
-                                                                                 link=''))
 
     #streamRDDCollection = tweets_stream.flatMap(lambda x: x.split(" "))
     streamRDDCollection = tweets_stream
