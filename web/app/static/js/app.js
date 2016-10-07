@@ -33,6 +33,7 @@ function search() {
     var jobtitle = $('#jobtitleInput').val();
     var company = $('#companyInput').val();
     var location = $('#locationInput').val();
+    var found = false;
  
  	var inputData = {'jobtitle': jobtitle, 'company': company, 'location': location};
 
@@ -108,12 +109,13 @@ function search() {
                     if ( companyTweetsMap[b._source.company] )  {
                         companyB_tweetsNum = companyTweetsMap[b_source.company].length;
                     }
-                    return companyA_tweetsNum - companyB_tweetsNum;
+                    return companyB_tweetsNum - companyA_tweetsNum;
                 });    
 
 
                 $("body").removeClass("landing_background");
-                $(".landing_box").fadeOut("normal", function() {
+                $(".landing_box").fadeOut("fast", function() {
+                    $(".topIconWrapper").show("slow");
                     $(".jobsResultsSection").show("slow");
                 });
 
@@ -140,7 +142,14 @@ function search() {
                     $jobRow.find(".tweetsNum").text(getNumTweets(company) + " tweets");
                     $jobRow.find(".tweetsNum").attr("data-company", company); 
 
-                    $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
+                    
+                    if (!found && company.toLowerCase() === 'facebook') {
+                      $(".jobsResultsSection").prepend('<div class="row jobRow">' + $jobRow.html() + '</div>');
+                      found = true;
+                    } else {
+                      $(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
+                    } 
+                    //$(".jobsResultsSection").append('<div class="row jobRow">' + $jobRow.html() + '</div>');
 
                 }
             } else {
@@ -157,6 +166,7 @@ function search() {
 
 function displayLanding() {
     $(".jobsResultsSection").hide();
+    $(".topIconWrapper").hide();
     $("body").addClass("landing_background");
     $(".landing_box").slideDown();
 }
