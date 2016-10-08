@@ -37,5 +37,9 @@ curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c23" -d '{"company" : "Yahoo"}'
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c24" -d '{"company" : "Cisco"}'
 #curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c25" -d '{"company" : "Stripe"}'
+#curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c26" -d '{"company" : "Sojern"}'
+#curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c27" -d '{"company" : "SambaTV"}'
+#curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c28" -d '{"company" : "Driver Group"}'
+#curl -XPOST "http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c29" -d '{"company" : "Uber"}'
 
 curl -XGET 'http://ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200/dashboard/company/c25'

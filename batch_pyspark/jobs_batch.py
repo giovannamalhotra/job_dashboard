@@ -23,8 +23,10 @@ ES_NODES = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com'
 
 
 ES_INDEX = 'dashboard'
-ES_TYPE = 'jobposting'
-ES_RESOURCE = 'dashboard/jobposting'
+#ES_TYPE = 'jobposting'
+ES_TYPE = 'jobpost'
+#ES_RESOURCE = 'dashboard/jobposting'
+ES_RESOURCE = 'dashboard/jobpost'
 es = Elasticsearch([{'host': ES_NODES}])
 
 #Amazon S3
@@ -76,15 +78,16 @@ diceStruct  = [StructField("company", StringType(), True),
 #print json.dumps(result, indent=2)
 
 
-def notFoundInJobsDB(row):
+#def notFoundInJobsDB(row):
+def notFoundInJobsDB(jobtitle, company, location):
 
     criteria_list = []
-    criteria_list.append({ "match": { "jobtitle": row.jobtitle }})
-    criteria_list.append({ "match": { "company": row.company }})
-    criteria_list.append({ "match": { "location": row.location }})
+    criteria_list.append({ "match": { "jobtitle": jobtitle }})
+    criteria_list.append({ "match": { "company": company }})
+    criteria_list.append({ "match": { "location": location }})
 
     body = {"query": { "bool": {  "must": criteria_list } } }
-    res = es.search(index = INDEX_NAME, doc_type = TYPE_NAME, size = 500, body = body)
+    res = es.search(index = ES_INDEX, doc_type = ES_TYPE, size = 500, body = body)
     if res.length:
         return false
     else:
@@ -191,21 +194,12 @@ if __name__ == '__main__':
 
 
    finalRDD = combinedDedupeDF.rdd.map(lambda row: ('key', row.asDict()))
-   #combinedDedupeRDD = combinedDedupeDF.rdd.filter(lambda row: notFoundInJobsDB(row))
-   #finalRDD = combinedDedupeRDD.map(lambda row: ('key', row.asDict()))
+   #combinedDedupeRDD = combinedDedupeDF.filter(notFoundInJobsDB(combinedDedupeDF.jobtitle, combinedDedupeDF.company, combinedDedupeDF.location))
+   #combinedDedupeDF = combinedDedupeDF.filter(notFoundInJobsDB(combinedDedupeDF.jobtitle, combinedDedupeDF.company, combinedDedupeDF.location))
+   #finalRDD = combinedDedupeDF.rdd.map(lambda row: ('key', row.asDict()))
 
    print finalRDD.take(10)
 
-   #finalRDD = combinedDedupDF.map(lambda row: pyspark.sql.Row(jobtitle=row.jobtitle, \
-   #                                                       company=row.company, \
-   #                                                       url=row.url, \
-   #                                                       location=row.location, \
-   #                                                       snippet=row.snippet, \
-   #                                                       day=row.day, \
-   #                                                       month=row.month, \
-   #                                                       year=row.year, \
-   #                                                       date=row.date, \
-   #                                                       origin=row.origin))
 
    #finalRDD.saveAsNewAPIHadoopFile(path='-', \
    #                                         outputFormatClass='org.elasticsearch.hadoop.mr.EsOutputFormat', \
