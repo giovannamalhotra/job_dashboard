@@ -32,8 +32,8 @@ def sendMessages(jobsListJSON):
 
 
 #Arrays for combinations
-locationArray = ['San+Francisco,+CA', 'Palo+Alto,+CA', 'New+York,+NY', 'Austin,+TX', 'Los+Angeles,+CA'  ]
-jobtitleArray = ['data+engineering', 'python', 'java', 'javascript', 'ruby', 'react', 'oracle'  ] 
+locationArray = ['San+Francisco,+CA', 'Palo+Alto,+CA', 'New+York,+NY', 'Austin,+TX', 'Los+Angeles,+CA', 'Miami,+CA', 'Seattle,+WA', 'Oakland,+CA', 'San+Diego,+CA' ]
+jobtitleArray = ['data+engineer', 'python', 'java', 'javascript', 'ruby', 'react', 'oracle', 'product manager', 'sql', 'c++', '.net',  'angular', 'cassandra', 'spark', 'sap', 'data scientist' ] 
 
 for location in locationArray:
    for title in jobtitleArray:

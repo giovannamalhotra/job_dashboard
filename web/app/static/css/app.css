@@ -1,20 +1,249 @@
 body {
-  padding: 2rem;
-  padding-top: 4rem;
+/*  padding: 2rem;
+  padding-top: 4rem;  */
 }
+
+.hide {
+  display:none;
+}
+
+.tempResults {
+  margin-top: 4rem;
+  display: none;
+}
+
+.tweetsResults {
+  display: none;
+}
+
 .title {
   margin-top: 4rem;
-  margin-bottom: 2rem;	
+  margin-bottom: 4rem;	
   text-align: center;
   font-size: 3rem;
 }
 
-.subtitle {
-  padding: 1rem 0;
-  text-align: left;
-  font-weight: bold;
-}
-
 .searchBtn {
 	margin-top: 2.5rem;
+  border-radius: 0;
+  width: 100%;
+  min-width: 8rem;
+  font-size: 1.6rem;
 }
+
+input.form-control {
+  padding: 0.5rem;
+  border-radius: 0;
+}
+
+.centerContent {
+  text-align: center;
+}
+
+.searchCriteriaSection {
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.jobRow {
+    max-width: 900px; 
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 1px solid #ccc;
+    padding: 2rem 4rem;
+}
+
+.jobRowTemplate { display: none;}
+
+.landing_background {
+  background-image: url(../../static/img/sf_landscape.jpg); 
+  background-repeat: no-repeat;
+  background-size: cover;
+/*  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+*/  
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.landing_background:before {
+  background-image: url(../../static/img/sf_landscape.jpg); 
+  background-repeat: no-repeat;
+  background-size: cover;
+/*  background-position: center center;
+  opacity: 0.3; */
+}
+
+.landing_box {
+    background-color: #fff;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}  
+
+.topIconWrapper {
+    text-align: left;
+    margin-left: 5rem;
+    padding: 2rem 4rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }  
+
+.topIconText {
+    padding-left: 0.5rem;
+    font-size: 2rem;
+}
+
+.twitterIcon {
+  color: #55acee;  /* Twitter color */
+  padding-right: 2rem;
+}
+
+.jobtitle {
+  color: #4dc247;
+  font-size: 2.2rem;
+}
+
+.company {
+  font-size: 2rem;
+}
+
+.location {
+  color: #808080;
+  font-style: italic;
+  font-size: 1.7rem;
+  padding-top: 0.4rem;
+}
+
+.snippet {
+  color: #A8A8A8;
+  padding-top: 0.4rem;
+}
+
+.urlLink { 
+  padding-top: 4rem;
+}
+
+.starIcon {
+  color: #e6c300;
+  font-size: 2.2rem;
+}
+
+.rightAlign {
+  text-align: right;
+}
+
+.tweetsNum {
+  color: #55acee;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.tweetsWrapper {
+  position: relative;
+}
+
+.tweetsRow {
+  display: none;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  border-top: 1px solid #ccc;
+  padding: 2rem 4rem;
+}
+
+.tweetsSectionTitle {
+  font-size: 1.8rem;
+  color: #55acee;
+}
+
+.tweetElem {
+  font-size: 1.6rem;
+  padding-top: 1rem;
+}
+
+.closeTweetsBtn {
+  color: #ccc;
+  font-size: 2rem;
+}
+
+.tweetsRow ul {
+  list-style-type: circle;
+  list-style-position: outside;
+  padding-left: 7rem;
+  color: #808080;
+}
+
+.tweetsSectionCol {
+  padding: 0;
+}
+
+.errorMsg { display:none;} }
+
+@media (max-width: 641px) {
+  
+  .landing_box {
+    min-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }  
+
+  .tweetsRow ul {
+    padding-left: 2rem;
+  }  
+
+  .tweetElem {
+    font-size: 1.4rem;
+  }  
+
+  .tweetsWrapper {
+    padding: 0;
+  }
+
+  .twitterIcon {
+    padding-right: 0;
+  }
+
+  .topIconWrapper {
+    margin-left: 0;
+    padding: 2rem 2rem;
+  }
+
+  .jobRow {
+    padding: 2rem 2rem;
+  }
+
+  .jobtitle {
+    font-size: 2rem;
+  }
+
+  .company {
+    font-size: 1.8rem;
+  }
+
+}
+
+@media (min-width: 642px) {
+
+  .searchBtn { width: auto;     min-width: 10rem;}
+  .landing_background {
+     background-image: url("../../static/img/sf_landscape.jpg"); 
+  }
+  input.form-control {
+    font-size: 18px;
+  }
+}    
