@@ -4,7 +4,8 @@ from elasticsearch import Elasticsearch
 import json
 
 INDEX_NAME = 'dashboard'
-TYPE_NAME = 'jobposting'
+#TYPE_NAME = 'jobposting'
+TYPE_NAME ='jobpost'
 #es = Elasticsearch(hosts = 'ec2-52-26-9-10.us-west-2.compute.amazonaws.com')
 es = Elasticsearch(hosts = ['ec2-52-26-9-10.us-west-2.compute.amazonaws.com:9200','ec2-54-68-213-131.us-west-2.compute.amazonaws.com:9200','ec2-52-43-52-129.us-west-2.compute.amazonaws.com:9200'])
 
