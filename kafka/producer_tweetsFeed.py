@@ -42,7 +42,7 @@ def start():
 
     # Filter to get English tweets only
     twitterStream.sample(languages=["en"])
-    twitterStream.filter(track=["#tech"])
+    #twitterStream.filter(track=["#tech"])
 
 if __name__ == "__main__":
     start()
