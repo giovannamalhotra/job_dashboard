@@ -6,6 +6,8 @@ from pyspark.sql import SQLContext
 from pyspark.sql.types import *
 from elasticsearch import Elasticsearch
 from datetime import datetime
+import sys
+
 
 #----------------------- Define constants ----------------------------#
 
@@ -124,7 +126,10 @@ if __name__ == '__main__':
    diceDF.printSchema()
    print indeedDF.rdd.take(1)
    print diceDF.rdd.take(1)
+   #print indeedDF.rdd.count()
+   #print diceDF.rdd.count()
 
+   #sys.exit()
 
    # Transform data to extract only the elements that are needed
    feedSchema = StructType(feedStruct)
