@@ -235,6 +235,8 @@ input.form-control {
     font-size: 1.8rem;
   }
 
+  .landing_box { width: 80%; }
+
 }
 
 @media (min-width: 642px) {
